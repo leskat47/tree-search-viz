@@ -24,6 +24,9 @@
 
 <body>
 Search for: <input type="text">
+<button type="button" id="breadth">Breadth First Search</button>
+<button type="button" id="depth">Depth First Search</button>
+
 <!-- load the d3.js library -->     
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
@@ -101,12 +104,12 @@ var node = g.selectAll(".node")
       return "node" + 
         (d.children ? " node--internal" : " node--leaf"); })
     .attr("transform", function(d) { 
-      return "translate(" + d.x + "," + d.y + ")"; });
+      return "translate(" + d.x + "," + d.y + ")"; })
+    .attr("id", function(d){ return d.data.name; });
 
 // adds the circle to the node
 node.append("circle")
-  .attr("r", 10)
-  .attr("id", function(d){ return d.data.name; });
+  .attr("r", 10);
 
 // adds the text to the node
 node.append("text")
@@ -115,7 +118,15 @@ node.append("text")
   .style("text-anchor", "middle")
   .text(function(d) { return d.data.name; });
 
+// d3.select("input").on("change", function() { console.log(this.value)});
+d3.select("#breadth").on("click", breadthFirstSearch);
 
+function breadthFirstSearch() {
+  var toFind = d3.select("input").value;
+
+  console.log(d3.select("#" + toFind))
+
+}
     
 </script>
 </body>
