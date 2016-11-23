@@ -122,9 +122,9 @@ node.append("text")
 d3.select("#breadth").on("click", breadthFirstSearch);
 
 function breadthFirstSearch() {
-  var toFind = d3.select("input").value;
+  var toFind = d3.select("input").property("value");
 
-  console.log(d3.select("#" + toFind))
+  d3.select("#" + toFind).select("circle").style("fill", "blue");
 
 }
     
