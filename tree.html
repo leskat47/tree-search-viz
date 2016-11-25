@@ -20,13 +20,35 @@
   stroke-width: 2px;
 }
 
+#graph {
+  float: left;
+}
+
 </style>
 
 <body>
-Search for: <input type="text">
-<button type="button" id="breadth">Breadth First Search</button>
-<button type="button" id="depth">Depth First Search</button>
-
+  <div>
+    Search for: <input type="text">
+    <button type="button" id="breadth">Breadth First Search</button>
+    <button type="button" id="depth">Depth First Search</button>
+  </div>
+  <div>
+    <svg width="100%" height="100px">
+      <circle r="10" cx="40" cy="50" style="fill: steelblue"></circle>
+      <text x="60" y="55" >Currently checking</text>
+      <circle r="10" cx="200" cy="50" style="fill: lightblue"></circle>
+      <text x="220" y="55" >To visit</text>
+      <circle r="10" cx="300" cy="50" style="fill: lightgray"></circle>
+      <text x="320" y="55">Checked</text>
+      <circle r="10" cx="400" cy="50" style="stroke: red; stroke-width: 3px; fill: white"></circle>
+      <text x="420" y="55">Find Me</text>
+    </svg>
+  </div>
+  <div id="graph">
+  </div>
+  <div id="list">
+    Nodes to check:
+  </div>
 <!-- load the d3.js library -->     
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
@@ -77,7 +99,7 @@ nodes = treemap(nodes);
 // append the svg obgect to the body of the page
 // appends a 'group' element to 'svg'
 // moves the 'group' element to the top left margin
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#graph").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom),
     g = svg.append("g")
@@ -98,7 +120,8 @@ var link = g.selectAll(".link")
 
 // adds each node as a group
 var node = g.selectAll(".node")
-    .data(nodes.descendants())
+    .data(nodes.descendants(), function(d) { return d.isSelected || (d.isSelected = false); })
+    // .data(nodes, function(d) { return d.isSelected || (d.isSelected = false); })
   .enter().append("g")
     .attr("class", function(d) { 
       return "node" + 
@@ -109,7 +132,13 @@ var node = g.selectAll(".node")
 
 // adds the circle to the node
 node.append("circle")
-  .attr("r", 10);
+  .attr("r", 10)
+  .style("fill", function(d){
+    // console.log(d);
+      if (d.isSelected == true) {
+        return "steelblue";
+      }
+  });
 
 // adds the text to the node
 node.append("text")
@@ -118,15 +147,34 @@ node.append("text")
   .style("text-anchor", "middle")
   .text(function(d) { return d.data.name; });
 
-// d3.select("input").on("change", function() { console.log(this.value)});
+function updateCircles(d) {
+  d3.selectAll(".node")
+  .selectAll("circle")
+  .style("fill", function(d){
+        console.log(d);
+      if (d.isSelected == true) {
+        return "steelblue";
+      }
+  });
+}
+
+function updateText(){
+  d3.select("#list").append("text", "Dumbledore");
+}
+
+
 d3.select("#breadth").on("click", breadthFirstSearch);
 
 function breadthFirstSearch() {
-  var toFind = d3.select("input").property("value");
-
-  d3.select("#" + toFind).select("circle").style("fill", "blue");
+  var toFind = "#" + d3.select("input").property("value");
+  d3.select(toFind).select("circle").style("stroke", "red");
+  d3.select("#Dumbledore").datum().isSelected = true;
+  updateCircles();
+  updateText();
 
 }
-    
+
+
+
 </script>
 </body>
