@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style> /* set the CSS */
-    
+
+body {
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 10pt;
+} 
+
 .node circle {
   fill: #fff;
   stroke: steelblue;
@@ -36,13 +41,13 @@
   <div>
     <svg width="100%" height="100px">
       <circle r="10" cx="40" cy="50" style="fill: steelblue"></circle>
-      <text x="60" y="55" >Currently checking</text>
+      <text x="55" y="55" >Currently checking</text>
       <circle r="10" cx="200" cy="50" style="fill: lightblue"></circle>
-      <text x="220" y="55" >To visit</text>
+      <text x="215" y="55" >To visit</text>
       <circle r="10" cx="300" cy="50" style="fill: white; stroke: steelblue; stroke-width: 3px;"></circle>
-      <text x="320" y="55">Checked</text>
+      <text x="315" y="55">Checked</text>
       <circle r="10" cx="400" cy="50" style="stroke: red; stroke-width: 3px; fill: white"></circle>
-      <text x="420" y="55">Find Me</text>
+      <text x="415" y="55">Find Me</text>
     </svg>
   </div>
   <div id="graph">
@@ -70,7 +75,7 @@ var treeData =
         ]
       },
       { 
-        "name": "McGonnagall",
+        "name": "McGonagall",
         "children": [
           {
             "name": "Ron",
@@ -156,7 +161,6 @@ var node = g.selectAll(".node")
 node.append("circle")
   .attr("r", 10)
   .style("fill", function(d){
-    // console.log(d);
       if (d.isSelected == true) {
         return "steelblue";
       }
@@ -169,12 +173,13 @@ node.append("text")
   .style("text-anchor", "middle")
   .text(function(d) { return d.data.name; });
 
+
 function updateCircles() {
+  // Change circles' appearance per status attributes
   d3.selectAll(".node")
   .selectAll("circle")
   .transition()
     .style("fill", function(d){
-          // console.log(d);
         if (d.isSelected == true) {
           return "steelblue";
         }
@@ -187,12 +192,14 @@ function updateCircles() {
   });
 }
 
-function updateText(queueList){
+function updateText(queueList, current){
+  // Change searching text to show status
   d3.select("#list").text(queueList.join(", "));
-  d3.select("#current-check").text(queueList[0]);
+  d3.select("#current-check").text(current);
 }
 
 function pulse(node) {
+  // Animation when node is found
   node.transition()
     .duration(500)
     .style("fill", "red")
@@ -202,20 +209,30 @@ function pulse(node) {
     .attr("r", 10);
 }
 
-function initBFS() {
+function initSearch(evt) {
+  // Set up breadth first search. Starts at root node. 
   var toFind = d3.select("input").property("value");
   d3.select("#" + toFind).select("circle").style("stroke", "red");
 
   // Start at the first node
   current = d3.select("#Dumbledore")
-  queueList = []
+  var checkList = []
   current.datum().isSelected = true;
   updateCircles();
-  updateText(["Dumbledore"]);
-  setTimeout(function (){ bfs(current, toFind)}, 1000);
+  updateText(["Dumbledore"], "Dumbledore");
+  if (this.id === "breadth") {
+    setTimeout(function (){ treeSearch(current, toFind, checkList, "breadth")}, 1000);
+  } else if (this.id === "depth"){
+    setTimeout(function (){ treeSearch(current, toFind, checkList, "depth")}, 1000);
+  }
 }
 
-function bfs(current, toFind) {
+function treeSearch(current, toFind, checkList, type) {
+  /* 
+   * Search for the matching node for the toFind value. Recursive function adds 
+   * child nodes to the end of the queue until the first item in the queue has 
+   * the same name value as toFind.
+  */
   if (current.datum().data.name === toFind) {
     pulse(current.select("circle"));
     return;
@@ -227,24 +244,35 @@ function bfs(current, toFind) {
     // set children of current node to toBeChecked and add to queue
     for (var i=0; i<children.length; i++) {
       d3.select("#" + children[i].data.name).datum().toBeChecked = true;
-      queueList.push(children[i].data.name)
+      checkList.push(children[i].data.name)
     }
     // Update display. Set current node to done
     setTimeout(function() { updateCircles()}, 500);
     current.datum().isSelected = false;
     current.datum().done = true;
-    updateText(queueList);
+    updateText(checkList, checkList[0]);
 
-    // Dequeue first item and set to current
-    current = d3.select("#" + queueList.shift());
+    if (type === "breadth") {
+      // Dequeue first item and set to current.
+      current = d3.select("#" + checkList.shift());
+    } else if (type === "depth") {
+      updateText(checkList, checkList.slice(-1)[0]);;
+      // Pop last item and set to current.
+      current = d3.select("#" + checkList.pop());
+    }
+
     current.datum().isSelected = true;
     setTimeout(function() { updateCircles()}, 500);
-
-    setTimeout(function () { bfs(current, toFind)}, 3000);
+    setTimeout(function () { treeSearch(current, toFind, checkList, type)}, 3000);
   }
 }
 
+
 function reset() {
+  /* 
+   * On click of the reset button, clear out attributes on nodes and return 
+   * the graph to the original state.
+  */
   var nodes = d3.selectAll(".node")
   nodes.selectAll("circle")
   .style("fill", "white")
@@ -260,9 +288,9 @@ function reset() {
 }
 
 // Event listeners
-d3.select("#breadth").on("click", initBFS);
+d3.select("#breadth").on("click", initSearch);
 d3.select("#reset").on("click", reset);
-// d3.select("#depth").on("click", initBFS)
+d3.select("#depth").on("click", initSearch);
 
 
 </script>
