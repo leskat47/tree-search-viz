@@ -2,13 +2,13 @@ var treeData =
   {
     "name": "Dumbledore",
     "children": [
-      { 
+      {
         "name": "Flitwick",
         "children": [
           { "name": "Padma"}
         ]
       },
-      { 
+      {
         "name": "McGonagall",
         "children": [
           {
@@ -20,17 +20,17 @@ var treeData =
           },
           { "name": "Hermione",
             "children": [
-              {"name": "Pavarti"}, 
+              {"name": "Pavarti"},
               {"name": "Lavendar"}
             ]
           }
         ]
       },
-      { "name": "Snape" , 
+      { "name": "Snape" ,
         "children": [
           {"name": "Malfoy",
             "children": [
-              {"name": "Crabbe"}, 
+              {"name": "Crabbe"},
               {"name": "Goyle"}
             ]
           }
@@ -82,7 +82,6 @@ var node = g.selectAll(".node")
           function(d) { return d.isSelected || (d.isSelected = false); },
           function(d) { return d.toBeChecked || (d.toBeChecked = false); },
           function(d) { return d.done || (d.done = false); })
-    // .data(nodes, function(d) { return d.isSelected || (d.isSelected = false); })
   .enter().append("g")
     .attr("class", function(d) { 
       return "node" + 
@@ -115,7 +114,6 @@ function updateCircles() {
   .transition()
     .style("stroke", function(d){
       if (d.done === true) {
-        console.log("thinks it's done");
         return "lightgray";
       } else if (d.toFind === true) {
         return "red";
