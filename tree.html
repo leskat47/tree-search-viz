@@ -44,7 +44,7 @@ body {
       <text x="55" y="55" >Currently checking</text>
       <circle r="10" cx="200" cy="50" style="fill: lightblue"></circle>
       <text x="215" y="55" >To visit</text>
-      <circle r="10" cx="300" cy="50" style="fill: white; stroke: steelblue; stroke-width: 3px;"></circle>
+      <circle r="10" cx="300" cy="50" style="fill: white; stroke: lightgray; stroke-width: 3px;"></circle>
       <text x="315" y="55">Checked</text>
       <circle r="10" cx="400" cy="50" style="stroke: red; stroke-width: 3px; fill: white"></circle>
       <text x="415" y="55">Find Me</text>
@@ -189,7 +189,12 @@ function updateCircles() {
         else if (d.done === true) {
           return "white";
         }
-  });
+    })
+    .style("stroke", function(d){
+      if (d.done === true) {
+        return "lightgray";
+      }
+    });
 }
 
 function updateText(queueList, current){
