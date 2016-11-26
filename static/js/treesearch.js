@@ -110,25 +110,29 @@ node.append("text")
 
 function updateCircles() {
   // Change circles' appearance per status attributes
-  d3.selectAll(".node")
+    d3.selectAll(".node")
   .selectAll("circle")
   .transition()
+    .style("stroke", function(d){
+      if (d.done === true) {
+        console.log("thinks it's done");
+        return "lightgray";
+      } else if (d.toFind === true) {
+        return "red";
+      }
+    })
     .style("fill", function(d){
-        if (d.isSelected == true) {
+        if (d.isSelected === true) {
           return "steelblue";
         }
-        else if (d.toBeChecked == true) {
+        else if (d.toBeChecked === true) {
           return "lightblue";
         }
         else if (d.done === true) {
           return "white";
         }
-    })
-    .style("stroke", function(d){
-      if (d.done === true) {
-        return "lightgray";
-      }
     });
+
 }
 
 function updateText(queueList, current){
@@ -152,18 +156,19 @@ function initSearch(evt) {
   // Set up breadth first search. Starts at root node.
   reset();
   var toFind = d3.select("input").property("value");
-  d3.select("#" + toFind).select("circle").style("stroke", "red");
+  d3.select("#" + toFind).select("circle").style("stroke", "red").datum().toFind = true;
 
   // Start at the first node
-  current = d3.select("#Dumbledore")
-  var checkList = []
+  current = d3.select("#Dumbledore");
+  var checkList = [];
   current.datum().isSelected = true;
   updateCircles();
   updateText(["Dumbledore"], "Dumbledore");
+
   if (this.id === "breadth") {
-    setTimeout(function (){ treeSearch(current, toFind, checkList, "breadth")}, 1000);
+    setTimeout(function (){ treeSearch(current, toFind, checkList, "breadth");}, 1000);
   } else if (this.id === "depth"){
-    setTimeout(function (){ treeSearch(current, toFind, checkList, "depth")}, 1000);
+    setTimeout(function (){ treeSearch(current, toFind, checkList, "depth");}, 1000);
   }
 }
 
