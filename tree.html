@@ -64,12 +64,25 @@ var treeData =
     "name": "Dumbledore",
     "children": [
       { 
-        "name": "McGonnagal",
+        "name": "Flitwick",
         "children": [
-          { "name": "Herminone",
+          { "name": "Padma"}
+        ]
+      },
+      { 
+        "name": "McGonnagall",
+        "children": [
+          {
+            "name": "Ron",
             "children": [
-              {"name": "Harry"}, 
-              {"name": "Ron"}
+              {"name": "Seamus"},
+              {"name": "Neville"}
+            ]
+          },
+          { "name": "Hermione",
+            "children": [
+              {"name": "Pavarti"}, 
+              {"name": "Lavendar"}
             ]
           }
         ]
@@ -175,13 +188,19 @@ function updateCircles() {
 }
 
 function updateText(queueList){
-  // console.log("Check " + queueList.forEach(function(j){ return j.data.name}))
   d3.select("#list").text(queueList.join(", "));
   d3.select("#current-check").text(queueList[0]);
-
-  // d3.selectAll("#list").selectAll("text").append(d3.select("#Dumbledore").datum().children);
 }
 
+function pulse(node) {
+  node.transition()
+    .duration(500)
+    .style("fill", "red")
+    .attr("r", 50)
+    .transition()
+    .duration(500)
+    .attr("r", 10);
+}
 // function  
 d3.select("#clear").on("click", function() {
   // console.log("clear")
@@ -210,6 +229,7 @@ function breadthFirstSearch() {
 
 function bfs(current, toFind) {
   if (current.datum().data.name === toFind) {
+    pulse(current.select("circle"));
     return;
   } else {
     current.datum().toBeChecked = false;
@@ -221,17 +241,18 @@ function bfs(current, toFind) {
       d3.select("#" + children[i].data.name).datum().toBeChecked = true;
       queueList.push(children[i].data.name)
     }
-    // Set current node to done
+    // Update display. Set current node to done
     setTimeout(function() { updateCircles()}, 500);
     current.datum().isSelected = false;
     current.datum().done = true;
     updateText(queueList);
 
-    // dequeue first item and set to current
+    // Dequeue first item and set to current
     current = d3.select("#" + queueList.shift());
     current.datum().isSelected = true;
     setTimeout(function() { updateCircles()}, 500);
-    setTimeout(function () { bfs(current, toFind)}, 5000);
+
+    setTimeout(function () { bfs(current, toFind)}, 3000);
   }
 }
 
