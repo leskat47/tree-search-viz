@@ -31,7 +31,7 @@
     Search for: <input type="text">
     <button type="button" id="breadth">Breadth First Search</button>
     <button type="button" id="depth">Depth First Search</button>
-    <button type="button" id="clear">Reset</button>
+    <button type="button" id="reset">Reset</button>
   </div>
   <div>
     <svg width="100%" height="100px">
@@ -201,20 +201,8 @@ function pulse(node) {
     .duration(500)
     .attr("r", 10);
 }
-// function  
-d3.select("#clear").on("click", function() {
-  // console.log("clear")
-  d3.selectAll(".node").selectAll("circle")
-  .style("fill", "white")
-  .style("stroke", "steelblue");
 
-  d3.select("#list").text("");
-  d3.select("#current-check").text("");  
-});
-
-d3.select("#breadth").on("click", breadthFirstSearch);
-
-function breadthFirstSearch() {
+function initBFS() {
   var toFind = d3.select("input").property("value");
   d3.select("#" + toFind).select("circle").style("stroke", "red");
 
@@ -256,7 +244,25 @@ function bfs(current, toFind) {
   }
 }
 
+function reset() {
+  var nodes = d3.selectAll(".node")
+  nodes.selectAll("circle")
+  .style("fill", "white")
+  .style("stroke", "steelblue");
 
+  d3.select("#list").text("");
+  d3.select("#current-check").text(""); 
+
+  nodes.each(function(d) {
+    d3.select(this).datum().toBeChecked = false;
+    d3.select(this).datum().isSelected = false;
+  });
+}
+
+// Event listeners
+d3.select("#breadth").on("click", initBFS);
+d3.select("#reset").on("click", reset);
+// d3.select("#depth").on("click", initBFS)
 
 
 </script>
