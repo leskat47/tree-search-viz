@@ -152,9 +152,13 @@ function pulse(node) {
 
 function initSearch(evt) {
   // Set up breadth first search. Starts at root node.
-  reset();
-  d3.select(this).style("font-weight", "bold");
+
   var toFind = d3.select("input").property("value");
+  reset();
+  document.getElementsByTagName('input')[0].value = toFind;
+
+  d3.select(this).style("font-weight", "bold");
+
   d3.select("#" + toFind).select("circle").style("stroke", "red").datum().toFind = true;
 
   // Start at the first node
@@ -218,6 +222,7 @@ function reset() {
    * On click of the reset button, clear out attributes on nodes and return 
    * the graph to the original state.
   */
+  document.getElementsByTagName('input')[0].value = "";
   var nodes = d3.selectAll(".node")
   nodes.selectAll("circle")
   .style("fill", "white")
@@ -229,6 +234,7 @@ function reset() {
   nodes.each(function(d) {
     d3.select(this).datum().toBeChecked = false;
     d3.select(this).datum().isSelected = false;
+    d3.select(this).datum().done = false;
   });
 }
 
