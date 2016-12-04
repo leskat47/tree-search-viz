@@ -107,8 +107,9 @@ node.append("text")
   .text(function(d) { return d.data.name; });
 
 
+// Change circles' appearance per status attributes
 function updateCircles() {
-  // Change circles' appearance per status attributes
+
     d3.selectAll(".node")
   .selectAll("circle")
   .transition()
@@ -133,14 +134,16 @@ function updateCircles() {
 
 }
 
+// Change searching text to show status
 function updateText(queueList, current){
-  // Change searching text to show status
+
   d3.select("#list").text(queueList.join(", "));
   d3.select("#current-check").text(current);
 }
 
+// Animation when node is found
 function pulse(node) {
-  // Animation when node is found
+  
   node.transition()
     .duration(500)
     .style("fill", "red")
@@ -150,8 +153,8 @@ function pulse(node) {
     .attr("r", 10);
 }
 
+// Set up breadth first search. Starts at root node.
 function initSearch(evt) {
-  // Set up breadth first search. Starts at root node.
 
   var toFind = d3.select("input").property("value");
   reset();
@@ -175,12 +178,13 @@ function initSearch(evt) {
   }
 }
 
+/* 
+ * Search for the matching node for the toFind value. Recursive function adds 
+ * child nodes to the end of the queue until the first item in the queue has 
+ * the same name value as toFind.
+*/
 function treeSearch(current, toFind, checkList, type) {
-  /* 
-   * Search for the matching node for the toFind value. Recursive function adds 
-   * child nodes to the end of the queue until the first item in the queue has 
-   * the same name value as toFind.
-  */
+
   if (current.datum().data.name === toFind) {
     pulse(current.select("circle"));
       d3.select("#" + type).style("font-weight", "normal");
@@ -190,11 +194,13 @@ function treeSearch(current, toFind, checkList, type) {
     current.datum().isSelected = true;
 
     var children = d3.select("#" + current.datum().data.name).datum().children || [];
+    
     // set children of current node to toBeChecked and add to queue
     for (var i=0; i<children.length; i++) {
       d3.select("#" + children[i].data.name).datum().toBeChecked = true;
       checkList.push(children[i].data.name)
     }
+    
     // Update display. Set current node to done
     setTimeout(function() { updateCircles()}, 500);
     current.datum().isSelected = false;
@@ -216,12 +222,12 @@ function treeSearch(current, toFind, checkList, type) {
   }
 }
 
-
+/* 
+ * On click of the reset button, clear out attributes on nodes and return 
+ * the graph to the original state.
+*/
 function reset() {
-  /* 
-   * On click of the reset button, clear out attributes on nodes and return 
-   * the graph to the original state.
-  */
+
   document.getElementsByTagName('input')[0].value = "";
   var nodes = d3.selectAll(".node")
   nodes.selectAll("circle")
