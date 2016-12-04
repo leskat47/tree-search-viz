@@ -153,6 +153,7 @@ function pulse(node) {
 function initSearch(evt) {
   // Set up breadth first search. Starts at root node.
   reset();
+  d3.select(this).style("font-weight", "bold");
   var toFind = d3.select("input").property("value");
   d3.select("#" + toFind).select("circle").style("stroke", "red").datum().toFind = true;
 
@@ -178,6 +179,7 @@ function treeSearch(current, toFind, checkList, type) {
   */
   if (current.datum().data.name === toFind) {
     pulse(current.select("circle"));
+      d3.select("#" + type).style("font-weight", "normal");
     return;
   } else {
     current.datum().toBeChecked = false;
