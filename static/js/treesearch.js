@@ -185,10 +185,12 @@ function initSearch(evt) {
 */
 function treeSearch(current, toFind, checkList, type) {
 
+  // Base case: Pulse current node and return
   if (current.datum().data.name === toFind) {
     pulse(current.select("circle"));
       d3.select("#" + type).style("font-weight", "normal");
     return;
+
   } else {
     current.datum().toBeChecked = false;
     current.datum().isSelected = true;
@@ -207,6 +209,7 @@ function treeSearch(current, toFind, checkList, type) {
     current.datum().done = true;
     updateText(checkList, checkList[0]);
 
+    // Take next items to be checked based on type of search
     if (type === "breadth") {
       // Dequeue first item and set to current.
       current = d3.select("#" + checkList.shift());
