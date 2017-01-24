@@ -172,10 +172,10 @@ function initSearch(evt) {
   current.datum().isSelected = true;
   updateCircles();
   updateText(["Dumbledore"], "Dumbledore");
-
-  if (this.id === "breadth") {
+  console.log(this)
+  if (this.value === "breadth") {
     setTimeout(function (){ treeSearch(current, toFind, checkList, "breadth");}, 1000);
-  } else if (this.id === "depth"){
+  } else if (this.value === "depth"){
     setTimeout(function (){ treeSearch(current, toFind, checkList, "depth");}, 1000);
   }
 }
@@ -232,7 +232,6 @@ function treeSearch(current, toFind, checkList, type) {
  * the graph to the original state.
 */
 function reset() {
-
   document.getElementsByTagName('input')[0].value = "";
   var nodes = d3.selectAll(".node")
   nodes.selectAll("circle")
@@ -250,6 +249,5 @@ function reset() {
 }
 
 // Event listeners
-d3.select("#breadth").on("click", initSearch);
+d3.selectAll(".start-search-button").on("click", initSearch);
 d3.select("#reset").on("click", reset);
-d3.select("#depth").on("click", initSearch);
