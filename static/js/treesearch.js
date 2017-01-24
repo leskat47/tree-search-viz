@@ -97,7 +97,7 @@
   node.append("circle")
     .attr("r", 10)
     .style("fill", function(d){
-        if (d.isSelected == true) {
+        if (d.isSelected === true) {
           return "steelblue";
         }
     });
@@ -173,7 +173,7 @@
     current.datum().isSelected = true;
     updateCircles();
     updateText(["Dumbledore"], "Dumbledore");
-    console.log(this)
+
     if (this.value === "breadth") {
       setTimeout(function (){ treeSearch(current, toFind, checkList, "breadth");}, 1000);
     } else if (this.value === "depth"){
@@ -203,11 +203,11 @@
       // set children of current node to toBeChecked and add to queue
       for (var i=0; i<children.length; i++) {
         d3.select("#" + children[i].data.name).datum().toBeChecked = true;
-        checkList.push(children[i].data.name)
+        checkList.push(children[i].data.name);
       }
       
       // Update display. Set current node to done
-      setTimeout(function() { updateCircles()}, 500);
+      setTimeout(function() { updateCircles(); }, 500);
       current.datum().isSelected = false;
       current.datum().done = true;
       updateText(checkList, checkList[0]);
@@ -217,14 +217,14 @@
         // Dequeue first item and set to current.
         current = d3.select("#" + checkList.shift());
       } else if (type === "depth") {
-        updateText(checkList, checkList.slice(-1)[0]);;
+        updateText(checkList, checkList.slice(-1)[0]);
         // Pop last item and set to current.
         current = d3.select("#" + checkList.pop());
       }
 
       current.datum().isSelected = true;
-      setTimeout(function() { updateCircles()}, 500);
-      setTimeout(function () { treeSearch(current, toFind, checkList, type)}, 3000);
+      setTimeout(function() { updateCircles(); }, 500);
+      setTimeout(function () { treeSearch(current, toFind, checkList, type); }, 3000);
     }
   }
 
@@ -234,13 +234,13 @@
   */
   function reset() {
     document.getElementsByTagName('input')[0].value = "";
-    var nodes = d3.selectAll(".node")
+    var nodes = d3.selectAll(".node");
     nodes.selectAll("circle")
     .style("fill", "white")
     .style("stroke", "steelblue");
 
     d3.select("#list").text("");
-    d3.select("#current-check").text(""); 
+    d3.select("#current-check").text("");
 
     nodes.each(function(d) {
       d3.select(this).datum().toBeChecked = false;
