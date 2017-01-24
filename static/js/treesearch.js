@@ -1,7 +1,9 @@
+"use strict"
+
 var treeData =
   {
-    "name": "Dumbledore",
-    "children": [
+    name: "Dumbledore",
+    children: [
       {
         "name": "Flitwick",
         "children": [
@@ -9,29 +11,29 @@ var treeData =
         ]
       },
       {
-        "name": "McGonagall",
-        "children": [
+        name: "McGonagall",
+        children: [
           {
-            "name": "Ron",
-            "children": [
-              {"name": "Seamus"},
-              {"name": "Neville"}
+            name: "Ron",
+            children: [
+              {name: "Seamus"},
+              {name: "Neville"}
             ]
           },
-          { "name": "Hermione",
-            "children": [
-              {"name": "Pavarti"},
-              {"name": "Lavendar"}
+          { name: "Hermione",
+            children: [
+              {name: "Pavarti"},
+              {name: "Lavendar"}
             ]
           }
         ]
       },
-      { "name": "Snape" ,
-        "children": [
-          {"name": "Malfoy",
-            "children": [
-              {"name": "Crabbe"},
-              {"name": "Goyle"}
+      { name: "Snape",
+        children: [
+          {name: "Malfoy",
+            children: [
+              {name: "Crabbe"},
+              {name: "Goyle"}
             ]
           }
         ]
@@ -165,7 +167,7 @@ function initSearch(evt) {
   d3.select("#" + toFind).select("circle").style("stroke", "red").datum().toFind = true;
 
   // Start at the first node
-  current = d3.select("#Dumbledore");
+  var current = d3.select("#Dumbledore");
   var checkList = [];
   current.datum().isSelected = true;
   updateCircles();
