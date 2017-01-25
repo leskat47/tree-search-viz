@@ -95,7 +95,6 @@
   // adds the circle to the node
   node.append("circle")
     .attr("r", 10)
-    .style("fill", (d) => d.isSelected ? "steelblue" : null);
 
   // adds the text to the node
   node.append("text")
