@@ -82,31 +82,25 @@
   // adds each node as a group
   var node = g.selectAll(".node")
       .data(nodes.descendants(),
-            function(d) { return d.isSelected || (d.isSelected = false); },
-            function(d) { return d.toBeChecked || (d.toBeChecked = false); },
-            function(d) { return d.done || (d.done = false); })
+            (d) => d.isSelected || (d.isSelected = false),
+            (d) => d.toBeChecked || (d.toBeChecked = false),
+            (d) => d.done || (d.done = false)
+      )
     .enter().append("g")
-      .attr("class", function(d) {
-        return "node" + 
-          (d.children ? " node--internal" : " node--leaf"); })
-      .attr("transform", function(d) { 
-        return "translate(" + d.x + "," + d.y + ")"; })
-      .attr("id", function(d){ return d.data.name; });
+      .attr("class", (d) =>
+        "node" + (d.children ? " node--internal" : " node--leaf"))
+      .attr("transform", (d) => "translate(" + d.x + "," + d.y + ")")
+      .attr("id", (d) => d.data.name);
 
   // adds the circle to the node
   node.append("circle")
     .attr("r", 10)
-    .style("fill", function(d){
-        if (d.isSelected === true) {
-          return "steelblue";
-        }
-    });
+    .style("fill", (d) => d.isSelected ? "steelblue" : null);
 
   // adds the text to the node
   node.append("text")
     .attr("dy", ".35em")
-    .attr("y", function(d) { return d.children ? -20 : 20; })
-    .style("text-anchor", "middle")
+    .attr("y", (d) => d.children ? -20 : 20)
     .text(d => d.data.name);
 
 
@@ -116,13 +110,9 @@
     d3.selectAll(".node")
       .selectAll("circle")
       .transition()
-        .style("stroke", function(d){
-          if (d.done === true) {
-            return "lightgray";
-          } else if (d.toFind === true) {
-            return "red";
-          }
-        })
+        .style("stroke", (d) => d.done ?
+            "lightgray" : () => d.toFind ? 
+            "red" : null)
         .style("fill", function(d){
             if (d.isSelected === true) {
               return "steelblue";
@@ -134,6 +124,11 @@
               return "white";
             }
         });
+        // .style("fill", (d) => d.isSelected ?
+        //     "steelblue"  : () => d.toBeChecked ?
+        //     "lightblue"  : () => d.done ?
+        //     "white": null
+        // );
 
   }
 
