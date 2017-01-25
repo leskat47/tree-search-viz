@@ -8,8 +8,8 @@
         {
           "name": "Flitwick",
           "children": [
-            { "name": "Padma"}
-          ]
+            { "name": "Padma"},
+          ],
         },
         {
           name: "McGonagall",
@@ -18,28 +18,28 @@
               name: "Ron",
               children: [
                 {name: "Seamus"},
-                {name: "Neville"}
-              ]
+                {name: "Neville"},
+              ],
             },
             { name: "Hermione",
               children: [
                 {name: "Pavarti"},
-                {name: "Lavendar"}
-              ]
-            }
-          ]
+                {name: "Lavendar"},
+              ],
+            },
+          ],
         },
         { name: "Snape",
           children: [
             {name: "Malfoy",
               children: [
                 {name: "Crabbe"},
-                {name: "Goyle"}
-              ]
-            }
-          ]
-        }
-      ]
+                {name: "Goyle"},
+              ],
+            },
+          ],
+        },
+      ],
     };
 
   // set the dimensions and margins of the diagram
@@ -107,33 +107,33 @@
     .attr("dy", ".35em")
     .attr("y", function(d) { return d.children ? -20 : 20; })
     .style("text-anchor", "middle")
-    .text(function(d) { return d.data.name; });
+    .text(d => d.data.name);
 
 
   // Change circles' appearance per status attributes
   function updateCircles() {
 
-      d3.selectAll(".node")
-    .selectAll("circle")
-    .transition()
-      .style("stroke", function(d){
-        if (d.done === true) {
-          return "lightgray";
-        } else if (d.toFind === true) {
-          return "red";
-        }
-      })
-      .style("fill", function(d){
-          if (d.isSelected === true) {
-            return "steelblue";
+    d3.selectAll(".node")
+      .selectAll("circle")
+      .transition()
+        .style("stroke", function(d){
+          if (d.done === true) {
+            return "lightgray";
+          } else if (d.toFind === true) {
+            return "red";
           }
-          else if (d.toBeChecked === true) {
-            return "lightblue";
-          }
-          else if (d.done === true) {
-            return "white";
-          }
-      });
+        })
+        .style("fill", function(d){
+            if (d.isSelected === true) {
+              return "steelblue";
+            }
+            else if (d.toBeChecked === true) {
+              return "lightblue";
+            }
+            else if (d.done === true) {
+              return "white";
+            }
+        });
 
   }
 
