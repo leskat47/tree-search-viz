@@ -72,12 +72,12 @@
       .data( nodes.descendants().slice(1))
     .enter().append("path")
       .attr("class", "link")
-      .attr("d", function(d) {
-         return "M" + d.x + "," + d.y +
+      .attr("d", (d) =>
+         "M" + d.x + "," + d.y +
          "C" + d.x + "," + (d.y + d.parent.y) / 2 +
           " " + d.parent.x + "," +  (d.y + d.parent.y) / 2 +
-          " " + d.parent.x + "," + d.parent.y;
-         });
+          " " + d.parent.x + "," + d.parent.y
+      );
 
   // adds each node as a group
   var node = g.selectAll(".node")
@@ -110,26 +110,17 @@
     d3.selectAll(".node")
       .selectAll("circle")
       .transition()
-        .style("stroke", (d) => d.done ?
-            "lightgray" : () => d.toFind ? 
-            "red" : null)
-        .style("fill", function(d){
-            if (d.isSelected === true) {
-              return "steelblue";
-            }
-            else if (d.toBeChecked === true) {
-              return "lightblue";
-            }
-            else if (d.done === true) {
-              return "white";
-            }
-        });
-        // .style("fill", (d) => d.isSelected ?
-        //     "steelblue"  : () => d.toBeChecked ?
-        //     "lightblue"  : () => d.done ?
-        //     "white": null
-        // );
+        .style("stroke", (d) =>
+          d.done ? "lightgray"
+          : d.toFind ? "red"
+          : null)
 
+        .style("fill", (d) => 
+          d.isSelected ? "steelblue"
+          : d.toBeChecked ? "lightblue"
+          : d.done ? "white"
+          : null
+        );
   }
 
   // Change searching text to show status
