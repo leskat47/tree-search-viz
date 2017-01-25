@@ -170,9 +170,9 @@
     updateText(["Dumbledore"], "Dumbledore");
 
     if (this.value === "breadth") {
-      setTimeout(function (){ treeSearch(current, toFind, checkList, "breadth");}, 1000);
+      setTimeout(() => treeSearch(current, toFind, checkList, "breadth"), 1000);
     } else if (this.value === "depth"){
-      setTimeout(function (){ treeSearch(current, toFind, checkList, "depth");}, 1000);
+      setTimeout(() => treeSearch(current, toFind, checkList, "depth"), 1000);
     }
   }
 
@@ -202,7 +202,7 @@
       }
       
       // Update display. Set current node to done
-      setTimeout(function() { updateCircles(); }, 500);
+      setTimeout(() => updateCircles(), 500);
       current.datum().isSelected = false;
       current.datum().done = true;
       updateText(checkList, checkList[0]);
@@ -218,8 +218,8 @@
       }
 
       current.datum().isSelected = true;
-      setTimeout(function() { updateCircles(); }, 500);
-      setTimeout(function () { treeSearch(current, toFind, checkList, type); }, 3000);
+      setTimeout(() => updateCircles(), 500);
+      setTimeout(() => treeSearch(current, toFind, checkList, type), 3000);
     }
   }
 
