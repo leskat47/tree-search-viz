@@ -99,21 +99,19 @@
   // adds the text to the node
   node.append("text")
     .attr("dy", ".35em")
-    .attr("y", (d) => d.children ? -20 : 20)
+    .attr("y", (d) => d.children ? -20 : 20) // place text above circle unless it's the bottom/last node
     .text(d => d.data.name);
 
 
   // Change circles' appearance per status attributes
   function updateCircles() {
 
-    d3.selectAll(".node")
-      .selectAll("circle")
+    d3.selectAll(".node circle")
       .transition()
         .style("stroke", (d) =>
           d.done ? "lightgray"
           : d.toFind ? "red"
           : null)
-
         .style("fill", (d) => 
           d.isSelected ? "steelblue"
           : d.toBeChecked ? "lightblue"
@@ -122,12 +120,14 @@
         );
   }
 
+
   // Change searching text to show status
   function updateText(queueList, current){
 
     d3.select("#list").text(queueList.join(", "));
     d3.select("#current-check").text(current);
   }
+
 
   // Animation when node is found
   function pulse(node) {
@@ -140,6 +140,7 @@
       .duration(500)
       .attr("r", 10);
   }
+
 
   // Set up breadth first search. Starts at root node.
   function initSearch(evt) {
