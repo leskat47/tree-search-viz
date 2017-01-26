@@ -81,11 +81,7 @@
 
   // adds each node as a group
   var node = g.selectAll(".node")
-      .data(nodes.descendants(),
-            (d) => d.isSelected || (d.isSelected = false),
-            (d) => d.toBeChecked || (d.toBeChecked = false),
-            (d) => d.done || (d.done = false)
-      )
+      .data(nodes.descendants())
     .enter().append("g")
       .attr("class", (d) =>
         "node" + (d.children ? " node--internal" : " node--leaf"))
