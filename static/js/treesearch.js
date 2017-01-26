@@ -90,7 +90,7 @@
 
     // adds the circle to the node
     node.append("circle")
-      .attr("r", 10)
+      .attr("r", 10);
 
     // adds the text to the node
     node.append("text")
@@ -119,7 +119,7 @@
 
   
   // Change searching text to show status
-  function updateText(queueList, current){
+  function updateTrackingText(queueList, current){
 
     d3.select("#list").text(queueList.join(", "));
     d3.select("#current-check").text(current);
@@ -127,7 +127,7 @@
 
 
   // Animation when node is found
-  function pulse(node) {
+  function pulseFoundCircle(node) {
     
     node.transition()
       .duration(500)
@@ -155,7 +155,7 @@
     var checkList = [];
     current.datum().isSelected = true;
     updateCircles();
-    updateText(["Dumbledore"], "Dumbledore");
+    updateTrackingText(["Dumbledore"], "Dumbledore");
 
     if (this.value === "breadth") {
       setTimeout(() => treeSearch(current, toFind, checkList, "breadth"), 1000);
@@ -193,14 +193,14 @@
       setTimeout(() => updateCircles(), 500);
       current.datum().isSelected = false;
       current.datum().done = true;
-      updateText(checkList, checkList[0]);
+      updateTrackingText(checkList, checkList[0]);
 
       // Take next items to be checked based on type of search
       if (type === "breadth") {
         // Dequeue first item and set to current.
         current = d3.select("#" + checkList.shift());
       } else if (type === "depth") {
-        updateText(checkList, checkList.slice(-1)[0]);
+        updateTrackingText(checkList, checkList.slice(-1)[0]);
         // Pop last item and set to current.
         current = d3.select("#" + checkList.pop());
       }
