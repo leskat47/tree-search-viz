@@ -109,7 +109,7 @@
           d.done ? "lightgray"
           : d.toFind ? "red"
           : null)
-        .style("fill", (d) => 
+        .style("fill", (d) =>
           d.isSelected ? "steelblue"
           : d.toBeChecked ? "lightblue"
           : d.done ? "white"
@@ -117,7 +117,7 @@
         );
   }
 
-  
+
   // Change searching text to show status
   function updateTrackingText(queueList, current){
 
@@ -128,7 +128,7 @@
 
   // Animation when node is found
   function pulseFoundCircle(node) {
-    
+
     node.transition()
       .duration(500)
       .style("fill", "red")
@@ -143,7 +143,7 @@
   function initSearch(evt) {
 
     var toFind = d3.select("input").property("value");
-    reset();
+    resetCirclesDisplay();
     document.getElementsByTagName('input')[0].value = toFind;
 
     d3.select(this).style("font-weight", "bold");
@@ -164,9 +164,9 @@
     }
   }
 
-  /* 
-   * Search for the matching node for the toFind value. Recursive function adds 
-   * child nodes to the end of the queue until the first item in the queue has 
+  /*
+   * Search for the matching node for the toFind value. Recursive function adds
+   * child nodes to the end of the queue until the first item in the queue has
    * the same name value as toFind.
   */
   function treeSearch(current, toFind, checkList, type) {
@@ -182,13 +182,13 @@
       current.datum().isSelected = true;
 
       var children = d3.select("#" + current.datum().data.name).datum().children || [];
-      
+
       // set children of current node to toBeChecked and add to queue
       for (var i=0; i<children.length; i++) {
         d3.select("#" + children[i].data.name).datum().toBeChecked = true;
         checkList.push(children[i].data.name);
       }
-      
+
       // Update display. Set current node to done
       setTimeout(() => updateCircles(), 500);
       current.datum().isSelected = false;
@@ -211,11 +211,11 @@
     }
   }
 
-  /* 
-   * On click of the reset button, clear out attributes on nodes and return 
+  /*
+   * On click of the reset button, clear out attributes on nodes and return
    * the graph to the original state.
   */
-  function reset() {
+  function resetCirclesDisplay() {
     document.getElementsByTagName('input')[0].value = "";
     var nodes = d3.selectAll(".node");
     nodes.selectAll("circle")
@@ -237,6 +237,6 @@
 
   // Event listeners
   d3.selectAll(".start-search-button").on("click", initSearch);
-  d3.select("#reset").on("click", reset);
+  d3.select("#reset").on("click", resetCirclesDisplay);
 
 }());
