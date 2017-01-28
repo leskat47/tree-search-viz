@@ -173,7 +173,7 @@
 
     // Base case: Pulse current node and return
     if (current.datum().data.name === toFind) {
-      pulse(current.select("circle"));
+      pulseFoundCircle(current.select("circle"));
         d3.select("#" + type).style("font-weight", "normal");
       return;
 
