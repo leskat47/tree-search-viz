@@ -226,9 +226,9 @@
     d3.select("#current-check").text("");
 
     nodes.each(function(d) {
-      d3.select(this).datum().toBeChecked = false;
-      d3.select(this).datum().isSelected = false;
-      d3.select(this).datum().done = false;
+      d.toBeChecked = false;
+      d.isSelected = false;
+      d.done = false;
     });
   }
 
