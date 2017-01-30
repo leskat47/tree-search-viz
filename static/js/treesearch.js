@@ -81,7 +81,7 @@
         );
 
     // adds each node as a group
-    var node = g.selectAll(".node")
+    var node = g.selectAll("circle .node")
         .data(nodes.descendants())
       .enter().append("g")
         .attr("class", (d) => "node")
