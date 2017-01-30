@@ -119,17 +119,17 @@
 
 
   // Change searching text to show status
-  function updateTrackingText(queueList, current){
+  function updateTrackingText(nodesToVisit, current){
 
-    d3.select("#list").text(queueList.join(", "));
+    d3.select("#list").text(nodesToVisit.join(", "));
     d3.select("#current-check").text(current);
   }
 
 
   // Animation when node is found
-  function pulseFoundCircle(node) {
+  function pulseFoundCircle(circle) {
 
-    node.transition()
+    circle.transition()
       .duration(500)
       .style("fill", "red")
       .attr("r", 50)
