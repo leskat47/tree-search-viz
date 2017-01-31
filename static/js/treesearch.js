@@ -90,7 +90,8 @@
 
     // adds the circle to the node
     node.append("circle")
-      .attr("r", 10);
+      .attr("r", 10)
+      .classed("plain", true);
 
     // adds the text to the node
     node.append("text")
@@ -104,17 +105,22 @@
   function updateCircles() {
 
     d3.selectAll(".node circle")
-      .transition()
-        .style("stroke", (d) =>
-          d.done ? "lightgray"
-          : d.toFind ? "red"
-          : null)
-        .style("fill", (d) =>
-          d.isSelected ? "steelblue"
-          : d.toBeChecked ? "lightblue"
-          : d.done ? "white"
-          : null
-        );
+      // .transition()
+        .classed("done", (d) => d.done || false)
+        .classed("to-find", (d) => d.toFind || false)
+        .classed("current", (d) => d.isSelected || false)
+        .classed("to-visit", (d) => d.toBeChecked || false)
+        .classed("checked", (d) => d.done || false);
+        // .style("stroke", (d) =>
+        //   d.done ? "lightgray"
+        //   : d.toFind ? "red"
+        //   : null)
+        // .style("fill", (d) =>
+        //   d.isSelected ? "steelblue"
+        //   : d.toBeChecked ? "lightblue"
+        //   : d.done ? "white"
+        //   : null
+        // );
   }
 
 
@@ -219,8 +225,7 @@
     document.getElementsByTagName('input')[0].value = "";
     var nodes = d3.selectAll(".node");
     nodes.selectAll("circle")
-    .style("fill", "white")
-    .style("stroke", "steelblue");
+    .classed("plain", true);
 
     d3.select("#list").text("");
     d3.select("#current-check").text("");

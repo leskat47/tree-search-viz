@@ -1,0 +1,49 @@
+body {
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 10pt;
+} 
+
+circle.plain {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 3px;
+}
+
+.node text { font: 12px sans-serif; }
+
+.node--internal text {
+  text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 2px;
+}
+
+#graph {
+  float: left;
+}
+circle.current {
+  fill: steelblue;
+  /*transition-duration: fill 200ms;*/
+}
+circle.to-visit {
+  fill: lightblue
+  /*transition-duration: fill 200ms;*/
+}
+circle.checked {
+  fill: white; 
+  stroke: lightgray; 
+  stroke-width: 3px;
+  /*transition-duration: fill 200ms stroke 200ms stroke-width 200ms;*/
+
+}
+circle.to-find {
+  stroke: red; 
+  stroke-width: 3px; 
+  fill: white;
+}
+text {
+  text-anchor: middle;
+}
