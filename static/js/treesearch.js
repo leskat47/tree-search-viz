@@ -105,22 +105,11 @@
   function updateCircles() {
 
     d3.selectAll(".node circle")
-      // .transition()
         .classed("done", (d) => d.done || false)
         .classed("to-find", (d) => d.toFind || false)
         .classed("current", (d) => d.isSelected || false)
         .classed("to-visit", (d) => d.toBeChecked || false)
         .classed("checked", (d) => d.done || false);
-        // .style("stroke", (d) =>
-        //   d.done ? "lightgray"
-        //   : d.toFind ? "red"
-        //   : null)
-        // .style("fill", (d) =>
-        //   d.isSelected ? "steelblue"
-        //   : d.toBeChecked ? "lightblue"
-        //   : d.done ? "white"
-        //   : null
-        // );
   }
 
 
@@ -137,7 +126,7 @@
 
     circle.transition()
       .duration(500)
-      .style("fill", "red")
+      .attr("class", "found")
       .attr("r", 50)
       .transition()
       .duration(500)
@@ -154,7 +143,7 @@
 
     d3.select(this).style("font-weight", "bold");
 
-    d3.select("#" + toFind).select("circle").style("stroke", "red").datum().toFind = true;
+    d3.select("#" + toFind + " circle").classed("to-find", true).datum().toFind = true;
 
     // Start at the first node
     var current = d3.select("#Dumbledore");
@@ -225,6 +214,7 @@
     document.getElementsByTagName('input')[0].value = "";
     var nodes = d3.selectAll(".node");
     nodes.selectAll("circle")
+    .attr("class", null)
     .classed("plain", true);
 
     d3.select("#list").text("");

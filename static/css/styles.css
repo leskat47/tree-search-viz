@@ -24,25 +24,25 @@ circle.plain {
 #graph {
   float: left;
 }
-circle.current {
-  fill: steelblue;
-  /*transition-duration: fill 200ms;*/
+circle.to-find {
+  stroke: red; 
+  stroke-width: 3px; 
+  fill: white;
 }
 circle.to-visit {
   fill: lightblue
-  /*transition-duration: fill 200ms;*/
+}
+circle.current {
+  fill: steelblue;
+  -webkit-transition: fill 1s;
 }
 circle.checked {
   fill: white; 
   stroke: lightgray; 
   stroke-width: 3px;
-  /*transition-duration: fill 200ms stroke 200ms stroke-width 200ms;*/
-
 }
-circle.to-find {
-  stroke: red; 
-  stroke-width: 3px; 
-  fill: white;
+circle.found {
+  fill: red;
 }
 text {
   text-anchor: middle;
