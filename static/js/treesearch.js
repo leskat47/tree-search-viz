@@ -226,6 +226,7 @@
     //   d.toBeChecked = false;
     //   d.isSelected = false;
     //   d.done = false;
+    //   d.toFind = false;
     // });
   }
 
