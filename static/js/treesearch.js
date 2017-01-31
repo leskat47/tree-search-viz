@@ -164,45 +164,46 @@
    * the same name value as toFind.
   */
   function treeSearch(current, toFind, checkList, type) {
-
+    var currentNode = current.datum()
     // Base case: Pulse current node and return
-    if (current.datum().data.name === toFind) {
+    if (currentNode.data.name === toFind) {
       pulseFoundCircle(current.select("circle"));
         d3.select("#" + type).style("font-weight", "normal");
       return;
-
-    } else {
-      current.datum().toBeChecked = false;
-      current.datum().isSelected = true;
-
-      var children = d3.select("#" + current.datum().data.name).datum().children || [];
-
-      // set children of current node to toBeChecked and add to queue
-      for (var i=0; i<children.length; i++) {
-        d3.select("#" + children[i].data.name).datum().toBeChecked = true;
-        checkList.push(children[i].data.name);
-      }
-
-      // Update display. Set current node to done
-      setTimeout(() => updateCircles(), 500);
-      current.datum().isSelected = false;
-      current.datum().done = true;
-      updateTrackingText(checkList, checkList[0]);
-
-      // Take next items to be checked based on type of search
-      if (type === "breadth") {
-        // Dequeue first item and set to current.
-        current = d3.select("#" + checkList.shift());
-      } else if (type === "depth") {
-        updateTrackingText(checkList, checkList.slice(-1)[0]);
-        // Pop last item and set to current.
-        current = d3.select("#" + checkList.pop());
-      }
-
-      current.datum().isSelected = true;
-      setTimeout(() => updateCircles(), 500);
-      setTimeout(() => treeSearch(current, toFind, checkList, type), 3000);
     }
+
+    currentNode.toBeChecked = false;
+    currentNode.isSelected = true;
+
+    var children = d3.select("#" + current.datum().data.name).datum().children || [];
+
+    // set children of current node to toBeChecked and add to queue
+    for (var i=0; i<children.length; i++) {
+      d3.select("#" + children[i].data.name).datum().toBeChecked = true;
+      checkList.push(children[i].data.name);
+    }
+
+
+    // Update display. Set current node to done
+    setTimeout(() => updateCircles(), 500);
+    currentNode.isSelected = false;
+    currentNode.done = true;
+    updateTrackingText(checkList, checkList[0]);
+
+    // Take next items to be checked based on type of search
+    if (type === "breadth") {
+      // Dequeue first item and set to current.
+      current = d3.select("#" + checkList.shift());
+    } else if (type === "depth") {
+      updateTrackingText(checkList, checkList.slice(-1)[0]);
+      // Pop last item and set to current.
+      current = d3.select("#" + checkList.pop());
+    }
+
+    currentNode.isSelected = true;
+    setTimeout(() => updateCircles(), 500);
+    setTimeout(() => treeSearch(current, toFind, checkList, type), 3000);
+  
   }
 
   /*
@@ -210,13 +211,11 @@
    * the graph to the original state.
   */
   function resetCirclesDisplay() {
-    // d3.select("#graph").html("");
-    // buildTree();
+    d3.select("#graph").html("");
+    buildTree();
     // document.getElementsByTagName('input')[0].value = "";
     // var nodes = d3.selectAll(".node");
     // nodes.selectAll("circle")
-    // .attr("class", null)
-    // .classed("plain", true);
 
     // d3.select("#list").text("");
     // d3.select("#current-check").text("");
@@ -227,6 +226,9 @@
     //   d.done = false;
     //   d.toFind = false;
     // });
+
+    // updateCircles();
+    // d3.select(".found").classed("found", false).classed("plain", true);
   }
 
 
