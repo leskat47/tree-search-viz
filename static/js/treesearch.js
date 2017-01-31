@@ -213,6 +213,20 @@
   function resetCirclesDisplay() {
     d3.select("#graph").html("");
     buildTree();
+    // document.getElementsByTagName('input')[0].value = "";
+    // var nodes = d3.selectAll(".node");
+    // nodes.selectAll("circle")
+    // .attr("class", null)
+    // .classed("plain", true);
+
+    // d3.select("#list").text("");
+    // d3.select("#current-check").text("");
+
+    // nodes.each(function(d) {
+    //   d.toBeChecked = false;
+    //   d.isSelected = false;
+    //   d.done = false;
+    // });
   }
 
 
