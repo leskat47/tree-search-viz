@@ -42,6 +42,8 @@
       ],
     };
 
+    const circleDelay = 500;
+
   function buildTree () {
     // set the dimensions and margins of the diagram
     var margin = {top: 40, right: 90, bottom: 50, left: 90};
@@ -175,7 +177,7 @@
     currentNode.toBeChecked = false;
     currentNode.isSelected = true;
 
-    var children = d3.select("#" + current.datum().data.name).datum().children || [];
+    var children = d3.select("#" + currentNode.data.name).datum().children || [];
 
     // set children of current node to toBeChecked and add to queue
     children.forEach(function(element) {
@@ -183,9 +185,8 @@
       checkList.push(element.data.name);
     });
 
-
     // Update display. Set current node to done
-    setTimeout(() => updateCircles(), 500);
+    setTimeout(updateCircles(), circleDelay);
     currentNode.isSelected = false;
     currentNode.done = true;
     updateTrackingText(checkList, checkList[0]);
@@ -201,7 +202,7 @@
     }
 
     currentNode.isSelected = true;
-    setTimeout(() => updateCircles(), 500);
+    setTimeout(updateCircles, circleDelay);
     setTimeout(() => treeSearch(current, toFind, checkList, type), 3000);
   
   }

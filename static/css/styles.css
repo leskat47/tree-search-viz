@@ -34,12 +34,13 @@ circle.to-check {
 }
 circle.selected {
   fill: steelblue;
-  -webkit-transition: fill 1s;
+  -webkit-transition: fill .5s;
 }
 circle.done {
   fill: white; 
   stroke: lightgray; 
   stroke-width: 3px;
+  -webkit-transition: fill 1s;
 }
 circle.found {
   fill: red;
