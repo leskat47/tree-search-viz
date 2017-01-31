@@ -178,10 +178,10 @@
     var children = d3.select("#" + current.datum().data.name).datum().children || [];
 
     // set children of current node to toBeChecked and add to queue
-    for (var i=0; i<children.length; i++) {
-      d3.select("#" + children[i].data.name).datum().toBeChecked = true;
-      checkList.push(children[i].data.name);
-    }
+    children.forEach(function(element) {
+      d3.select("#" + element.data.name).datum().toBeChecked = true;
+      checkList.push(element.data.name);
+    });
 
 
     // Update display. Set current node to done
