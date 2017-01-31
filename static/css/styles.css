@@ -29,14 +29,14 @@ circle.to-find {
   stroke-width: 3px; 
   fill: white;
 }
-circle.to-visit {
+circle.to-check {
   fill: lightblue
 }
-circle.current {
+circle.selected {
   fill: steelblue;
   -webkit-transition: fill 1s;
 }
-circle.checked {
+circle.done {
   fill: white; 
   stroke: lightgray; 
   stroke-width: 3px;

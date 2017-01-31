@@ -105,11 +105,10 @@
   function updateCircles() {
 
     d3.selectAll(".node circle")
-        .classed("done", (d) => d.done || false)
         .classed("to-find", (d) => d.toFind || false)
-        .classed("current", (d) => d.isSelected || false)
-        .classed("to-visit", (d) => d.toBeChecked || false)
-        .classed("checked", (d) => d.done || false);
+        .classed("selected", (d) => d.isSelected || false)
+        .classed("to-check", (d) => d.toBeChecked || false)
+        .classed("done", (d) => d.done || false);
   }
 
 
@@ -211,8 +210,8 @@
    * the graph to the original state.
   */
   function resetCirclesDisplay() {
-    d3.select("#graph").html("");
-    buildTree();
+    // d3.select("#graph").html("");
+    // buildTree();
     // document.getElementsByTagName('input')[0].value = "";
     // var nodes = d3.selectAll(".node");
     // nodes.selectAll("circle")
