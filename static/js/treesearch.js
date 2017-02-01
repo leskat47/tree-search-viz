@@ -187,10 +187,6 @@
 
     // Update display
     updateCircles();
-
-    // Change current node status to done. Select next node to check
-    currentNode.isSelected = false;
-    currentNode.done = true;
     
 
     // Take next items to be checked based on type of search
@@ -198,16 +194,20 @@
       if (type === "breadth") {
       // Dequeue first item and set to current.
         updateTrackingText(checkList, checkList[0]);
-        current = d3.select("#" + checkList.shift());
+        current = d3.select("#" + checkList.shift()); 
       } else if (type === "depth") {
         updateTrackingText(checkList, checkList.slice(-1)[0]);
-        // Pop last item and set to current.
         current = d3.select("#" + checkList.pop());
+        // Pop last item and set to current.
       }
     }, 2500);
+
+    // Change current node status to done. Update display.
+    currentNode.isSelected = false;
+    currentNode.done = true;
     setTimeout(updateCircles, circleDelay);
+
     setTimeout(() => treeSearch(current, toFind, checkList, type), 3000);
-  
   }
 
   /*
@@ -216,7 +216,6 @@
   */
   function resetCirclesDisplay() {
     d3.select("#graph").html("");
-    document.getElementById("search-term").value = '';
     buildTree();
     // document.getElementsByTagName('input')[0].value = "";
     // var nodes = d3.selectAll(".node");
