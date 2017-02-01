@@ -42,7 +42,7 @@
       ],
     };
 
-    const circleDelay = 500;
+    const circleDelay = 1000;
 
   function buildTree () {
     // set the dimensions and margins of the diagram
@@ -140,7 +140,7 @@
 
     var toFind = d3.select("input").property("value");
     resetCirclesDisplay();
-    document.getElementsByTagName('input')[0].value = toFind;
+    // document.getElementsByTagName('input')[0].value = toFind;
 
     d3.select(this).style("font-weight", "bold");
 
@@ -185,23 +185,26 @@
       checkList.push(element.data.name);
     });
 
-    // Update display. Set current node to done
-    setTimeout(updateCircles(), circleDelay);
+    // Update display
+    updateCircles();
+
+    // Change current node status to done. Select next node to check
     currentNode.isSelected = false;
     currentNode.done = true;
-    updateTrackingText(checkList, checkList[0]);
+    
 
     // Take next items to be checked based on type of search
-    if (type === "breadth") {
+    setTimeout(function() {
+      if (type === "breadth") {
       // Dequeue first item and set to current.
-      current = d3.select("#" + checkList.shift());
-    } else if (type === "depth") {
-      updateTrackingText(checkList, checkList.slice(-1)[0]);
-      // Pop last item and set to current.
-      current = d3.select("#" + checkList.pop());
-    }
-
-    currentNode.isSelected = true;
+        updateTrackingText(checkList, checkList[0]);
+        current = d3.select("#" + checkList.shift());
+      } else if (type === "depth") {
+        updateTrackingText(checkList, checkList.slice(-1)[0]);
+        // Pop last item and set to current.
+        current = d3.select("#" + checkList.pop());
+      }
+    }, 2500);
     setTimeout(updateCircles, circleDelay);
     setTimeout(() => treeSearch(current, toFind, checkList, type), 3000);
   
@@ -213,6 +216,7 @@
   */
   function resetCirclesDisplay() {
     d3.select("#graph").html("");
+    document.getElementById("search-term").value = '';
     buildTree();
     // document.getElementsByTagName('input')[0].value = "";
     // var nodes = d3.selectAll(".node");

@@ -34,7 +34,7 @@ circle.to-check {
 }
 circle.selected {
   fill: steelblue;
-  -webkit-transition: fill .5s;
+  -webkit-transition: fill .25s;
 }
 circle.done {
   fill: white; 
