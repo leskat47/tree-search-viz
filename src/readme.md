@@ -7,4 +7,4 @@ shows the nodes queued up (or stacked up) to be checked and the current node bei
 checked. Users can see this both in the graph animation and as text. 
 
 
-![animation](static/images/dfs.gif?raw=true "Breadth First Search Animation")
+![animation](images/dfs.gif?raw=true "Breadth First Search Animation")

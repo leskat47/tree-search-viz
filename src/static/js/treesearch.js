@@ -138,13 +138,14 @@
   // Set up breadth first search. Starts at root node.
   function initSearch(evt) {
 
-    var toFind = d3.select("input").property("value");
+    var searchText = d3.select("input").property("value");
+    console.log(searchText);
     resetCirclesDisplay();
-    // document.getElementsByTagName('input')[0].value = toFind;
 
     d3.select(this).style("font-weight", "bold");
+    debugger;
 
-    d3.select("#" + toFind + " circle").classed("to-find", true).datum().toFind = true;
+    d3.select("#" + searchText + " circle").classed("to-find", true).datum().searchText = true;
 
     // Start at the first node
     var current = d3.select("#Dumbledore");
@@ -154,9 +155,9 @@
     updateTrackingText(["Dumbledore"], "Dumbledore");
 
     if (this.value === "breadth") {
-      setTimeout(() => treeSearch(current, toFind, checkList, "breadth"), 1000);
+      setTimeout(() => treeSearch(current, searchText, checkList, "breadth"), 1000);
     } else if (this.value === "depth"){
-      setTimeout(() => treeSearch(current, toFind, checkList, "depth"), 1000);
+      setTimeout(() => treeSearch(current, searchText, checkList, "depth"), 1000);
     }
   }
 
@@ -185,20 +186,19 @@
       checkList.push(element.data.name);
     });
 
-    // Update display
+    // Update display with current active node and children
     updateCircles();
-    
 
     // Take next items to be checked based on type of search
     setTimeout(function() {
       if (type === "breadth") {
       // Dequeue first item and set to current.
         updateTrackingText(checkList, checkList[0]);
-        current = d3.select("#" + checkList.shift()); 
+        current = d3.select("#" + checkList.shift());
       } else if (type === "depth") {
-        updateTrackingText(checkList, checkList.slice(-1)[0]);
+      // Pop last item and set to current.
+        updateTrackingText(checkList, checkList[checkList.length - 1]);
         current = d3.select("#" + checkList.pop());
-        // Pop last item and set to current.
       }
     }, 2500);
 
