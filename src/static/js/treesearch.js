@@ -1,38 +1,52 @@
 (function () {
   'use strict';
 
+
+  ///////////////////////////////////////////////////////////////////////////////
+  // Global data
+
+  /* Function to build nodes for tree */
+
   function P(name, children) {
     return { name: name, children: children };
   }
 
+
   const TREEDATA =
-  P("Dumbledore", [
-    P("Flitwick", [
-      P("Padma"),
-    ]),
-    P("McGonagall", [
-      P("Ron", [
-        P("Seamus"),
-        P("Neville"),
+    P("Dumbledore", [
+      P("Flitwick", [
+        P("Padma"),
       ]),
-      P("Hermoine", [
-        P("Pavarti"),
-        P("Lavendar"),
+      P("McGonagall", [
+        P("Ron", [
+          P("Seamus"),
+          P("Neville"),
+        ]),
+        P("Hermoine", [
+          P("Pavarti"),
+          P("Lavendar"),
+        ]),
       ]),
-    ]),
-    P("Snape", [
-      P("Malfoy", [
-        P("Crabbe"),
-        P("Goyle"),
+      P("Snape", [
+        P("Malfoy", [
+          P("Crabbe"),
+          P("Goyle"),
+        ])
       ])
-    ])
-  ]);
+    ]);
 
   const CIRCLEDELAY = 500;
   const TEXTDELAY = 2.5 * CIRCLEDELAY;
   const NEXTNODEDELAY = 3 * CIRCLEDELAY;
 
+
+  ///////////////////////////////////////////////////////////////////////////////
+  // Setup Tree
+
+  /* buildTree: Create d3 tree and append data */
+
   function buildTree () {
+
     // set the dimensions and margins of the diagram
     var margin = {top: 40, right: 90, bottom: 50, left: 90};
     var width = 660 - margin.left - margin.right;
@@ -58,7 +72,7 @@
           .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
 
-    // adds the links between the nodes
+    // add links between the nodes
     var link = g.selectAll(".link")
         .data( nodes.descendants().slice(1))
       .enter().append("path")
@@ -90,7 +104,11 @@
       .text(d => d.data.name);
   }
 
-  // Change circles' appearance per status attributes
+  ///////////////////////////////////////////////////////////////////////////////
+  // Handle visual updating before & during searching
+
+  /* updateCircles: Change circles' appearance per status attributes */
+
   function updateCircles() {
 
     d3.selectAll(".node circle")
@@ -101,7 +119,8 @@
   }
 
 
-  // Change searching text to show status
+  /* updateTrackingText: Change searching text to show status */
+
   function updateTrackingText(nodesToVisit, current){
 
     d3.select("#list").text(nodesToVisit.join(", "));
@@ -109,7 +128,8 @@
   }
 
 
-  // Animation when node is found
+  /* pulseFoundCircle: Animation when node is found */
+
   function pulseFoundCircle(circle) {
 
     circle.transition()
@@ -122,7 +142,8 @@
   }
 
 
-  // Set up breadth first search. Starts at root node.
+  /* initSearch: Set up breadth first search. Start at root node. */
+
   function initSearch(evt) {
 
     var searchText = d3.select("input").property("value");
@@ -147,12 +168,15 @@
     }
   }
 
+
   /*
-   * Search for the matching node for the toFind value. Recursive function adds
+   * treeSearch: Search for the matching node for the toFind value. Recursive function adds
    * child nodes to the end of the queue until the first item in the queue has
    * the same name value as toFind.
   */
+
   function treeSearch(current, toFind, checkList, type) {
+
     var currentNode = current.datum()
     // Base case: Pulse current node and return
     if (currentNode.data.name === toFind) {
@@ -196,11 +220,11 @@
     setTimeout(() => treeSearch(current, toFind, checkList, type), NEXTNODEDELAY);
   }
 
-  /*
-   * On click of the reset button, clear out attributes on nodes and return
-   * the graph to the original state.
-  */
+
+  /* resetCirclesDisplay: Clear node attributes and return graph to original state. */
+
   function resetCirclesDisplay() {
+
     d3.select("#graph").html("");
     buildTree();
     // document.getElementsByTagName('input')[0].value = "";
@@ -221,11 +245,10 @@
     // d3.select(".found").classed("found", false).classed("plain", true);
   }
 
-
-  buildTree();
-
   // Event listeners
   d3.selectAll(".start-search-button").on("click", initSearch);
   d3.select("#reset").on("click", resetCirclesDisplay);
+
+  buildTree();
 
 }());
