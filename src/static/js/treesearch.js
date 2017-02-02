@@ -1,48 +1,36 @@
 (function () {
   'use strict';
 
-  const treeData =
-    {
-      name: "Dumbledore",
-      children: [
-        {
-          "name": "Flitwick",
-          "children": [
-            { "name": "Padma"},
-          ],
-        },
-        {
-          name: "McGonagall",
-          children: [
-            {
-              name: "Ron",
-              children: [
-                {name: "Seamus"},
-                {name: "Neville"},
-              ],
-            },
-            { name: "Hermione",
-              children: [
-                {name: "Pavarti"},
-                {name: "Lavendar"},
-              ],
-            },
-          ],
-        },
-        { name: "Snape",
-          children: [
-            {name: "Malfoy",
-              children: [
-                {name: "Crabbe"},
-                {name: "Goyle"},
-              ],
-            },
-          ],
-        },
-      ],
-    };
+  function P(name, children) {
+    return { name: name, children: children };
+  }
 
-    const circleDelay = 1000;
+  const TREEDATA =
+  P("Dumbledore", [
+    P("Flitwick", [
+      P("Padma"),
+    ]),
+    P("McGonagall", [
+      P("Ron", [
+        P("Seamus"),
+        P("Neville"),
+      ]),
+      P("Hermoine", [
+        P("Pavarti"),
+        P("Lavendar"),
+      ]),
+    ]),
+    P("Snape", [
+      P("Malfoy", [
+        P("Crabbe"),
+        P("Goyle"),
+      ])
+    ])
+  ]);
+
+  const CIRCLEDELAY = 500;
+  const TEXTDELAY = 2.5 * CIRCLEDELAY;
+  const NEXTNODEDELAY = 3 * CIRCLEDELAY;
 
   function buildTree () {
     // set the dimensions and margins of the diagram
@@ -50,19 +38,19 @@
     var width = 660 - margin.left - margin.right;
     var height = 500 - margin.top - margin.bottom;
 
-    // declares a tree layout and assigns the size
+    // declare a tree layout and assigns the size
     var treemap = d3.tree()
         .size([width, height]);
 
-    //  assigns the data to a hierarchy using parent-child relationships
-    var nodes = d3.hierarchy(treeData);
+    //  assign the data to a hierarchy using parent-child relationships
+    var nodes = d3.hierarchy(TREEDATA);
 
-    // maps the node data to the tree layout
+    // map the node data to the tree layout
     nodes = treemap(nodes);
 
     // append the svg obgect to the body of the page
-    // appends a 'group' element to 'svg'
-    // moves the 'group' element to the top left margin
+    // append a 'group' element to 'svg'
+    // move the 'group' element to the top left margin
     var svg = d3.select("#graph").append("svg")
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom),
@@ -82,7 +70,7 @@
             " " + d.parent.x + "," + d.parent.y
         );
 
-    // adds each node as a group
+    // add each node as a group
     var node = g.selectAll("circle .node")
         .data(nodes.descendants())
       .enter().append("g")
@@ -90,17 +78,16 @@
         .attr("transform", (d) => "translate(" + d.x + "," + d.y + ")")
         .attr("id", (d) => d.data.name);
 
-    // adds the circle to the node
+    // add the circle to the node
     node.append("circle")
       .attr("r", 10)
       .classed("plain", true);
 
-    // adds the text to the node
+    // add the text to the node
     node.append("text")
       .attr("dy", ".35em")
       .attr("y", (d) => d.children ? -20 : 20) // place text above circle unless it's the bottom/last node
       .text(d => d.data.name);
-
   }
 
   // Change circles' appearance per status attributes
@@ -143,7 +130,6 @@
     resetCirclesDisplay();
 
     d3.select(this).style("font-weight", "bold");
-
     d3.select("#" + searchText + " circle").classed("to-find", true).datum().toFind = true;
 
     // Start at the first node
@@ -200,14 +186,14 @@
         updateTrackingText(checkList, checkList[checkList.length - 1]);
         current = d3.select("#" + checkList.pop());
       }
-    }, 2500);
+    }, TEXTDELAY);
 
     // Change current node status to done. Update display.
     currentNode.isSelected = false;
     currentNode.done = true;
-    setTimeout(updateCircles, circleDelay);
+    setTimeout(updateCircles, CIRCLEDELAY);
 
-    setTimeout(() => treeSearch(current, toFind, checkList, type), 3000);
+    setTimeout(() => treeSearch(current, toFind, checkList, type), NEXTNODEDELAY);
   }
 
   /*
