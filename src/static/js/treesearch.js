@@ -143,15 +143,15 @@
     resetCirclesDisplay();
 
     d3.select(this).style("font-weight", "bold");
-    debugger;
 
-    d3.select("#" + searchText + " circle").classed("to-find", true).datum().searchText = true;
+    d3.select("#" + searchText + " circle").classed("to-find", true).datum().toFind = true;
 
     // Start at the first node
     var current = d3.select("#Dumbledore");
     var checkList = [];
     current.datum().isSelected = true;
     updateCircles();
+
     updateTrackingText(["Dumbledore"], "Dumbledore");
 
     if (this.value === "breadth") {
