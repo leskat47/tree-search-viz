@@ -97,8 +97,8 @@
 
     // add the circle to the node
     node.append("circle")
-      .attr("r", CIRCLE_RADIUS)
-      .classed("plain", true);
+      .attr("r", CIRCLE_RADIUS);
+
 
     // add the text to the node
     node.append("text")
@@ -241,7 +241,7 @@
     // });
 
     // updateCircles();
-    // d3.select(".found").classed("found", false).classed("plain", true);
+    // d3.select(".found").classed("found", false);
   }
 
   // Event listeners
