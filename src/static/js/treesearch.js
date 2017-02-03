@@ -101,9 +101,10 @@
 
 
     // add the text to the node
+    // place label above circle unless it's the bottom/last node
     node.append("text")
       .attr("dy", ".35em")
-      .attr("y", (d) => d.children ? -20 : 20) // place text above circle unless it's the bottom/last node
+      .attr("y", (d) => d.children ? -20 : 20)
       .text(d => d.data.name);
   }
 
@@ -145,6 +146,32 @@
   }
 
 
+/* resetCirclesDisplay: Clear node attributes and return graph to original state. */
+
+  function resetCirclesDisplay() {
+
+    d3.select("#graph").html("");
+    buildTree(TREE_DATA);
+    // document.getElementsByTagName('input')[0].value = "";
+    // var nodes = d3.selectAll(".node");
+    // nodes.selectAll("circle")
+
+    // d3.select("#list").text("");
+    // d3.select("#current-check").text("");
+
+    // nodes.each(function(d) {
+    //   d.toBeChecked = false;
+    //   d.isSelected = false;
+    //   d.done = false;
+    //   d.toFind = false;
+    // });
+
+    // updateCircles();
+    // d3.select(".found").classed("found", false);
+  }
+
+///////////////////////////////////////////////////////////////////////////////
+// Searching
   /* initSearch: Set up breadth first search. Start at root node. */
 
   function initSearch(evt) {
@@ -165,8 +192,6 @@
       setTimeout(() => treeSearch(current, searchText, [], this.value), 1000);
   }
 
-  ///////////////////////////////////////////////////////////////////////////////
-  // Searching
 
   /*
    * treeSearch: Search for the matching node for the toFind value. Recursive function adds
@@ -220,29 +245,7 @@
   }
 
 
-  /* resetCirclesDisplay: Clear node attributes and return graph to original state. */
-
-  function resetCirclesDisplay() {
-
-    d3.select("#graph").html("");
-    buildTree(TREE_DATA);
-    // document.getElementsByTagName('input')[0].value = "";
-    // var nodes = d3.selectAll(".node");
-    // nodes.selectAll("circle")
-
-    // d3.select("#list").text("");
-    // d3.select("#current-check").text("");
-
-    // nodes.each(function(d) {
-    //   d.toBeChecked = false;
-    //   d.isSelected = false;
-    //   d.done = false;
-    //   d.toFind = false;
-    // });
-
-    // updateCircles();
-    // d3.select(".found").classed("found", false);
-  }
+  
 
   // Event listeners
   d3.selectAll(".start-search-button").on("click", initSearch);
