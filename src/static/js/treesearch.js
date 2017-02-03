@@ -12,7 +12,7 @@
   }
 
 
-  const TREEDATA =
+  const TREE_DATA =
     P("Dumbledore", [
       P("Flitwick", [
         P("Padma"),
@@ -39,41 +39,44 @@
   const TEXTDELAY = 2.5 * CIRCLEDELAY;
   const NEXTNODEDELAY = 3 * CIRCLEDELAY;
 
+  const CIRCLE_RADIUS = 10;
+  const SVG_HEIGHT = 500;
+  const SVG_WIDTH = 660;
+
 
   ///////////////////////////////////////////////////////////////////////////////
   // Setup Tree
 
   /* buildTree: Create d3 tree and append data */
 
-  function buildTree () {
+  function buildTree (treeData) {
 
     // set the dimensions and margins of the diagram
-    var margin = {top: 40, right: 90, bottom: 50, left: 90};
-    var width = 660 - margin.left - margin.right;
-    var height = 500 - margin.top - margin.bottom;
-
-    // declare a tree layout and assigns the size
-    var treemap = d3.tree()
-        .size([width, height]);
-
-    //  assign the data to a hierarchy using parent-child relationships
-    var nodes = d3.hierarchy(TREEDATA);
-
-    // map the node data to the tree layout
-    nodes = treemap(nodes);
+    const treeMargin = {top: 40, right: 90, bottom: 50, left: 90};
+    const treeWidth = SVG_WIDTH - treeMargin.left - treeMargin.right;
+    const treeHeight = SVG_HEIGHT - treeMargin.top - treeMargin.bottom;
 
     // append the svg obgect to the body of the page
-    // append a 'group' element to 'svg'
-    // move the 'group' element to the top left margin
-    var svg = d3.select("#graph").append("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom),
-        g = svg.append("g")
+    const svg = d3.select("#graph").append("svg")
+          .attr("width", SVG_WIDTH)
+          .attr("height", SVG_HEIGHT);
+
+    // append a 'group' element to 'svg' adjust location to be within tree area
+    const g = svg.append("g")
           .attr("transform",
-                "translate(" + margin.left + "," + margin.top + ")");
+                "translate(" + treeMargin.left + "," + treeMargin.top + ")");
+
+    // declare a tree layout and assigns the size
+    const treemap = d3.tree()
+        .size([treeWidth, treeHeight]);
+
+    //  assign the data to a hierarchy using parent-child relationships
+    // map the node data to the tree layout
+    const nodes = treemap(d3.hierarchy(treeData));
+
 
     // add links between the nodes
-    var link = g.selectAll(".link")
+    const link = g.selectAll(".link")
         .data( nodes.descendants().slice(1))
       .enter().append("path")
         .attr("class", "link")
@@ -85,7 +88,7 @@
         );
 
     // add each node as a group
-    var node = g.selectAll("circle .node")
+    const node = g.selectAll("circle .node")
         .data(nodes.descendants())
       .enter().append("g")
         .attr("class", (d) => "node")
@@ -94,7 +97,7 @@
 
     // add the circle to the node
     node.append("circle")
-      .attr("r", 10)
+      .attr("r", CIRCLE_RADIUS)
       .classed("plain", true);
 
     // add the text to the node
@@ -147,7 +150,6 @@
   function initSearch(evt) {
 
     var searchText = d3.select("input").property("value");
-    console.log(searchText);
     resetCirclesDisplay();
 
     d3.select(this).style("font-weight", "bold");
@@ -155,19 +157,16 @@
 
     // Start at the first node
     var current = d3.select("#Dumbledore");
-    var checkList = [];
     current.datum().isSelected = true;
     updateCircles();
 
     updateTrackingText(["Dumbledore"], "Dumbledore");
 
-    if (this.value === "breadth") {
-      setTimeout(() => treeSearch(current, searchText, checkList, "breadth"), 1000);
-    } else if (this.value === "depth"){
-      setTimeout(() => treeSearch(current, searchText, checkList, "depth"), 1000);
-    }
+      setTimeout(() => treeSearch(current, searchText, [], this.value), 1000);
   }
 
+  ///////////////////////////////////////////////////////////////////////////////
+  // Searching
 
   /*
    * treeSearch: Search for the matching node for the toFind value. Recursive function adds
@@ -226,7 +225,7 @@
   function resetCirclesDisplay() {
 
     d3.select("#graph").html("");
-    buildTree();
+    buildTree(TREE_DATA);
     // document.getElementsByTagName('input')[0].value = "";
     // var nodes = d3.selectAll(".node");
     // nodes.selectAll("circle")
@@ -249,6 +248,6 @@
   d3.selectAll(".start-search-button").on("click", initSearch);
   d3.select("#reset").on("click", resetCirclesDisplay);
 
-  buildTree();
+  buildTree(TREE_DATA);
 
 }());

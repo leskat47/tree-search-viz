@@ -3,7 +3,7 @@ body {
   font-size: 10pt;
 } 
 
-circle.plain {
+circle {
   fill: #fff;
   stroke: steelblue;
   stroke-width: 3px;
@@ -43,6 +43,7 @@ circle.done {
   -webkit-transition: fill 1s;
 }
 circle.found {
+  stroke: red;
   fill: red;
 }
 text {
