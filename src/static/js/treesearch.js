@@ -5,12 +5,12 @@
   ///////////////////////////////////////////////////////////////////////////////
   // Global data
 
+
   /* Function to build nodes for tree */
 
   function P(name, children) {
     return { name: name, children: children };
   }
-
 
   const TREE_DATA =
     P("Dumbledore", [
@@ -149,7 +149,7 @@
 /* resetCirclesDisplay: Clear node attributes and return graph to original state. */
 
   function resetCirclesDisplay() {
-
+    d3.selectAll(".start-search-button").classed("active", false);
     d3.select("#graph").html("");
     buildTree(TREE_DATA);
     // document.getElementsByTagName('input')[0].value = "";
@@ -172,27 +172,18 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // Searching
+
   /* initSearch: Set up breadth first search. Start at root node. */
 
-  function initSearch(evt) {
-
-    var searchText = d3.select("input").property("value");
-    resetCirclesDisplay();
-
-    d3.select(this).style("font-weight", "bold");
+  function initSearch(startNode, searchText, searchType) {
     d3.select("#" + searchText + " circle").classed("to-find", true).datum().toFind = true;
 
-    // Start at the first node
-    var current = d3.select("#Dumbledore");
-    current.datum().isSelected = true;
-    updateCircles();
+    // Start at the first node. Set up tracking list.
+    var current = d3.select("#" + startNode);
+    updateTrackingText([startNode], startNode);
 
-    updateTrackingText(["Dumbledore"], "Dumbledore");
-
-      setTimeout(() => treeSearch(current, searchText, [], this.value), 1000);
+    setTimeout(() => treeSearch(current, searchText, [startNode], searchType), NEXTNODEDELAY);
   }
-
-
   /*
    * treeSearch: Search for the matching node for the toFind value. Recursive function adds
    * child nodes to the end of the queue until the first item in the queue has
@@ -224,7 +215,7 @@
     updateCircles();
 
     // Take next items to be checked based on type of search
-    // Dequeue from check list for breadth, pop for depth   
+    // Dequeue from check list for breadth, pop for depth
     setTimeout(function() {
       if (type === "breadth") {
         updateTrackingText(checkList, checkList[0]);
@@ -246,7 +237,14 @@
 ///////////////////////////////////////////////////////////////////////////////
 // UI
 
-
+  /* handleStartSearch: UI for starting search, get values show search in view */
+  function handleStartSearch(evt){
+    resetCirclesDisplay();
+    var searchText = d3.select("input").property("value");
+    var searchType = this.value;
+    d3.select(this).classed("active", true);
+    initSearch(TREE_DATA.name, searchText, searchType);
+  }
   /* handleSearchDone: post-search UI cleanup */
 
   function handleSearchDone() {
@@ -254,11 +252,11 @@
   }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Event Listeners  
+// Event Listeners
 
-  d3.selectAll(".start-search-button").on("click", initSearch);
+  d3.selectAll(".start-search-button").on("click", handleStartSearch);
   d3.select("#reset").on("click", resetCirclesDisplay);
-  d3.select(document).on("search-done", handleSearchDone);
+  // d3.select(document).on("search-done", handleSearchDone);
 
   buildTree(TREE_DATA);
 

@@ -1,12 +1,17 @@
 body {
   font-family: Verdana, Geneva, sans-serif;
   font-size: 10pt;
-} 
+}
 
 circle {
   fill: #fff;
   stroke: steelblue;
   stroke-width: 3px;
+}
+
+button.active {
+  background-color: lightblue;
+  font-weight: bold;
 }
 
 .node text { font: 12px sans-serif; }
@@ -25,8 +30,8 @@ circle {
   float: left;
 }
 circle.to-find {
-  stroke: red; 
-  stroke-width: 3px; 
+  stroke: red;
+  stroke-width: 3px;
   fill: white;
 }
 circle.to-check {
@@ -37,8 +42,8 @@ circle.selected {
   -webkit-transition: fill .25s;
 }
 circle.done {
-  fill: white; 
-  stroke: lightgray; 
+  fill: white;
+  stroke: lightgray;
   stroke-width: 3px;
   -webkit-transition: fill 1s;
 }
