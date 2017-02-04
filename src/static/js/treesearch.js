@@ -205,7 +205,7 @@
     // Base case: Pulse current node and return
     if (currentNode.data.name === toFind) {
       pulseFoundCircle(current.select("circle"));
-        d3.select("#" + type).style("font-weight", "normal");
+      handleSearchDone();
       return;
     }
 
@@ -224,13 +224,12 @@
     updateCircles();
 
     // Take next items to be checked based on type of search
+    // Dequeue from check list for breadth, pop for depth   
     setTimeout(function() {
       if (type === "breadth") {
-      // Dequeue first item and set to current.
         updateTrackingText(checkList, checkList[0]);
         current = d3.select("#" + checkList.shift());
       } else if (type === "depth") {
-      // Pop last item and set to current.
         updateTrackingText(checkList, checkList[checkList.length - 1]);
         current = d3.select("#" + checkList.pop());
       }
@@ -244,12 +243,22 @@
     setTimeout(() => treeSearch(current, toFind, checkList, type), NEXTNODEDELAY);
   }
 
+///////////////////////////////////////////////////////////////////////////////
+// UI
 
-  
 
-  // Event listeners
+  /* handleSearchDone: post-search UI cleanup */
+
+  function handleSearchDone() {
+    d3.select(".start-search-button").classed("active", false);
+  }
+
+///////////////////////////////////////////////////////////////////////////////
+// Event Listeners  
+
   d3.selectAll(".start-search-button").on("click", initSearch);
   d3.select("#reset").on("click", resetCirclesDisplay);
+  d3.select(document).on("search-done", handleSearchDone);
 
   buildTree(TREE_DATA);
 
