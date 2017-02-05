@@ -190,26 +190,25 @@
    * the same name value as toFind.
   */
 
-  function treeSearch(current, toFind, checkList, type) {
+  function treeSearch(currentNode, nameToFind, checkList, type) {
+    var currentNodeData = currentNode.datum()
+    currentNodeData.toBeChecked = false;
+    currentNodeData.isSelected = true;
 
-    var currentNode = current.datum()
-    // Base case: Pulse current node and return
-    if (currentNode.data.name === toFind) {
-      pulseFoundCircle(current.select("circle"));
+    // Base case: Node found. Pulse current node and return
+    if (currentNodeData.data.name === nameToFind) {
+      pulseFoundCircle(currentNode.select("circle"));
       handleSearchDone();
       return;
     }
-
-    currentNode.toBeChecked = false;
-    currentNode.isSelected = true;
-
-    var children = d3.select("#" + currentNode.data.name).datum().children || [];
+    var children = currentNode.datum().children || [];
 
     // set children of current node to toBeChecked and add to queue
     children.forEach(function(element) {
       d3.select("#" + element.data.name).datum().toBeChecked = true;
       checkList.push(element.data.name);
     });
+
 
     // Update display with current active node and children
     updateCircles();
@@ -219,23 +218,26 @@
     setTimeout(function() {
       if (type === "breadth") {
         updateTrackingText(checkList, checkList[0]);
-        current = d3.select("#" + checkList.shift());
+        checkList.shift();
+        currentNode = d3.select("#" + checkList[0]);
       } else if (type === "depth") {
         updateTrackingText(checkList, checkList[checkList.length - 1]);
-        current = d3.select("#" + checkList.pop());
+        currentNode = d3.select("#" + checkList.pop());
       }
     }, TEXTDELAY);
 
     // Change current node status to done. Update display.
-    currentNode.isSelected = false;
-    currentNode.done = true;
+    currentNodeData.isSelected = false;
+    currentNodeData.done = true;
     setTimeout(updateCircles, CIRCLEDELAY);
 
-    setTimeout(() => treeSearch(current, toFind, checkList, type), NEXTNODEDELAY);
+    setTimeout(() => treeSearch(currentNode, nameToFind, checkList, type), NEXTNODEDELAY);
   }
 
-///////////////////////////////////////////////////////////////////////////////
+
+//  /////////////////////////////////////////////////////////////////////////////
 // UI
+
 
   /* handleStartSearch: UI for starting search, get values show search in view */
   function handleStartSearch(evt){
@@ -245,6 +247,8 @@
     d3.select(this).classed("active", true);
     initSearch(TREE_DATA.name, searchText, searchType);
   }
+
+
   /* handleSearchDone: post-search UI cleanup */
 
   function handleSearchDone() {
