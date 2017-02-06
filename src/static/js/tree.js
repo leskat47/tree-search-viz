@@ -27,13 +27,12 @@ const TREE_DATA =
     ])
   ]);
 
-function SearchTree(name, data, width, height, body) {
+function SearchTree(name, data, width, height) {
   this.name = name;
   this.SVG_WIDTH = width;
   this.SVG_HEIGHT = height;
   this.CIRCLE_RADIUS = width/60;
   this.treeData = data;
-
 
   this.buildTree= function() {
 
@@ -94,9 +93,30 @@ function SearchTree(name, data, width, height, body) {
       .text(d => d.data.name);
 
     return g;
-  }
+  };
 
+  // Show Text display for search
+  this.createUI = function() {
+    d3.select('body').append('div')
+      .html('Search for: <input type="text" id="search-term"><button type="button" class="start-search-button" value="breadth">Breadth First Search</button><button type="button" class="start-search-button" value="depth">Depth First Search</button><button type="button" id="reset">Reset</button>');
+    d3.select('body').append('div')
+      .attr('id', 'graph');
+    d3.select('body')
+      .append('div')
+      .append('h3').
+      text('Nodes to Check');
+    d3.select('body')
+      .append('div')
+      .attr('id', 'list')
+    d3.select('body')
+      .append('h3')
+      .text('Currently Checking');
+    d3.select('body')
+      .append('div')
+      .attr('id', 'current-check');
+  };
 }
-var doc = document.getElementsByTagName("body");
-var tree = new SearchTree("Hogwarts", TREE_DATA, 660, 500, doc);
+
+var tree = new SearchTree("Hogwarts", TREE_DATA, 660, 500);
+tree.createUI();
 tree.buildTree();
