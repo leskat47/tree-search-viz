@@ -49,8 +49,7 @@
 
   /* buildTree: Create d3 tree and append data */
 
-  function buildTree (treeData) {
-
+  function buildTree(treeData) {
     // set the dimensions and margins of the diagram
     const treeMargin = {top: 40, right: 90, bottom: 50, left: 90};
     const treeWidth = SVG_WIDTH - treeMargin.left - treeMargin.right;
@@ -243,9 +242,14 @@
   function handleStartSearch(evt){
     resetCirclesDisplay();
     var searchText = d3.select("input").property("value");
-    var searchType = this.value;
-    d3.select(this).classed("active", true);
-    initSearch(TREE_DATA.name, searchText, searchType);
+    if (searchText) {
+      var searchType = this.value;
+      d3.select(this).classed("active", true);
+      initSearch(TREE_DATA.name, searchText, searchType);
+    }
+    else {
+      alert("please select a node")
+    }
   }
 
 
