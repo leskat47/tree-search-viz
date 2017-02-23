@@ -202,14 +202,13 @@
   */
 
   function treeSearch(currentNode, nameToFind, checkList, type) {
-    var currentNodeData = currentNode.datum()
+    var currentNodeData = currentNode.datum();
 
     currentNodeData.toBeChecked = false;
     currentNodeData.isSelected = true;
 
+    // set children of current node to toBeChecked and add to queue/stack
     var children = currentNode.datum().children || [];
-
-    // set children of current node to toBeChecked and add to queue
     children.forEach(function(element) {
       d3.select("#" + element.data.name).datum().toBeChecked = true;
       checkList.push(element.data.name);
@@ -217,6 +216,7 @@
 
     // Update display with current active node and children
     updateCircles();
+    updateTrackingText(checkList, currentNodeData.data.name)
 
     // Base case: Node found. Pulse current node and return
     if (currentNodeData.data.name === nameToFind) {
@@ -228,17 +228,9 @@
     // Take next items to be checked based on type of search
     // Dequeue from check list for breadth, pop for depth
     if (type === "breadth") {
-      updateTrackingText(checkList, checkList[0]);
-      checkList.shift();
-      currentNode = d3.select("#" + checkList[0]);
-
+      currentNode = d3.select("#" + checkList.shift());
     } else if (type === "depth") {
-      if (checkList[0] === "Dumbledore") { 
-        checkList.shift();
-      } else {
-        updateTrackingText(checkList, checkList[checkList.length - 1]);
-        currentNode = d3.select("#" + checkList.pop());
-      }
+      currentNode = d3.select("#" + checkList.pop());
     }
 
     // Change current node status to done. Update display.
