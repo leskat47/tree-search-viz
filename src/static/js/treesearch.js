@@ -193,7 +193,7 @@
     var current = d3.select("#" + startNode);
     updateTrackingText([startNode], startNode);
 
-    setTimeout(() => treeSearch(current, searchText, [startNode], searchType), 500);
+    setTimeout(() => treeSearch(current, searchText, [], searchType), 500);
   }
   /*
    * treeSearch: Search for the matching node for the toFind value. Recursive function adds
@@ -216,7 +216,7 @@
 
     // Update display with current active node and children
     updateCircles();
-    updateTrackingText(checkList, currentNodeData.data.name)
+    updateTrackingText(checkList, currentNodeData.data.name);
 
     // Base case: Node found. Pulse current node and return
     if (currentNodeData.data.name === nameToFind) {
