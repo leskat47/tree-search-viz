@@ -15,7 +15,8 @@ button.active {
 }
 
 button#reset {
-  background-color: lightyellow;
+  border-color: red;
+  background-color: white;
   border-radius: 5px;
 }
 
