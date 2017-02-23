@@ -35,9 +35,18 @@
       ])
     ]);
 
-  const CIRCLEDELAY = 500;
-  const TEXTDELAY = 2.5 * CIRCLEDELAY;
-  const NEXTNODEDELAY = 3 * CIRCLEDELAY;
+  const REF_LIST = ["Dumbledore", "Flitwick",
+    "Padma","McGonagall", "Ron", "Seamus", "Neville", "Hermoine", "Pavarti", "Lavendar", 
+    "Snape", "Malfoy", "Crabbe", "Goyle"]
+  var CIRCLEDELAY = 800;
+  var TEXTDELAY;
+  var NEXTNODEDELAY;
+  var nextNode;
+
+  function updateDelays(circleDelay) {
+    TEXTDELAY = circleDelay;
+    NEXTNODEDELAY = 3 * circleDelay;
+  }
 
   const CIRCLE_RADIUS = 10;
   const SVG_HEIGHT = 500;
@@ -175,13 +184,16 @@
   /* initSearch: Set up breadth first search. Start at root node. */
 
   function initSearch(startNode, searchText, searchType) {
-    d3.select("#" + searchText + " circle").classed("to-find", true).datum().toFind = true;
-
+    if (REF_LIST.indexOf((document.getElementById("search-term").value)) >=0 ) {
+      d3.select("#" + searchText + " circle").classed("to-find", true).datum().toFind = true;
+    }
+    CIRCLEDELAY = document.getElementById("speed").value;
+    updateDelays(CIRCLEDELAY);
     // Start at the first node. Set up tracking list.
     var current = d3.select("#" + startNode);
     updateTrackingText([startNode], startNode);
 
-    setTimeout(() => treeSearch(current, searchText, [startNode], searchType), NEXTNODEDELAY);
+    setTimeout(() => treeSearch(current, searchText, [startNode], searchType), 500);
   }
   /*
    * treeSearch: Search for the matching node for the toFind value. Recursive function adds
@@ -191,15 +203,10 @@
 
   function treeSearch(currentNode, nameToFind, checkList, type) {
     var currentNodeData = currentNode.datum()
+
     currentNodeData.toBeChecked = false;
     currentNodeData.isSelected = true;
 
-    // Base case: Node found. Pulse current node and return
-    if (currentNodeData.data.name === nameToFind) {
-      pulseFoundCircle(currentNode.select("circle"));
-      handleSearchDone();
-      return;
-    }
     var children = currentNode.datum().children || [];
 
     // set children of current node to toBeChecked and add to queue
@@ -208,22 +215,35 @@
       checkList.push(element.data.name);
     });
 
-
     // Update display with current active node and children
     updateCircles();
 
+    // Base case: Node found. Pulse current node and return
+    if (currentNodeData.data.name === nameToFind) {
+      pulseFoundCircle(currentNode.select("circle"));
+      handleSearchDone();
+      return;
+    }
+
     // Take next items to be checked based on type of search
     // Dequeue from check list for breadth, pop for depth
-    setTimeout(function() {
-      if (type === "breadth") {
-        updateTrackingText(checkList, checkList[0]);
+    console.log(checkList)
+    if (type === "breadth") {
+      updateTrackingText(checkList, checkList[0]);
+      checkList.shift();
+      currentNode = d3.select("#" + checkList[0]);
+
+    } else if (type === "depth") {
+      if (checkList[0] === "Dumbledore") { 
         checkList.shift();
-        currentNode = d3.select("#" + checkList[0]);
-      } else if (type === "depth") {
+      } else {
         updateTrackingText(checkList, checkList[checkList.length - 1]);
         currentNode = d3.select("#" + checkList.pop());
       }
-    }, TEXTDELAY);
+    }
+
+
+    // currentNode = nextNode;
 
     // Change current node status to done. Update display.
     currentNodeData.isSelected = false;
