@@ -14,6 +14,11 @@ button.active {
   font-weight: bold;
 }
 
+button#reset {
+  background-color: lightyellow;
+  border-radius: 5px;
+}
+
 .node text { font: 12px sans-serif; }
 
 .node--internal text {

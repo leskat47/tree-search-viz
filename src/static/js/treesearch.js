@@ -227,7 +227,6 @@
 
     // Take next items to be checked based on type of search
     // Dequeue from check list for breadth, pop for depth
-    console.log(checkList)
     if (type === "breadth") {
       updateTrackingText(checkList, checkList[0]);
       checkList.shift();
@@ -241,9 +240,6 @@
         currentNode = d3.select("#" + checkList.pop());
       }
     }
-
-
-    // currentNode = nextNode;
 
     // Change current node status to done. Update display.
     currentNodeData.isSelected = false;
