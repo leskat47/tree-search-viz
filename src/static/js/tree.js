@@ -1,40 +1,45 @@
-/* Function to build nodes for tree */
+/* Class to build nodes for tree */
 
-function P(name, children) {
-  return { name: name, children: children };
+class P {
+  constructor(name, children) {
+    name: name;
+    children: children
+  }
 }
 
 const TREE_DATA =
-  P("Dumbledore", [
-    P("Flitwick", [
-      P("Padma"),
+  new P("Dumbledore", [
+    new P("Flitwick", [
+      new P("Padma"),
     ]),
-    P("McGonagall", [
-      P("Ron", [
-        P("Seamus"),
-        P("Neville"),
+    new P("McGonagall", [
+      new P("Ron", [
+        new P("Seamus"),
+        new P("Neville"),
       ]),
-      P("Hermoine", [
-        P("Pavarti"),
-        P("Lavendar"),
+      new P("Hermoine", [
+        new P("Pavarti"),
+        new P("Lavendar"),
       ]),
     ]),
-    P("Snape", [
-      P("Malfoy", [
-        P("Crabbe"),
-        P("Goyle"),
+    new P("Snape", [
+      new P("Malfoy", [
+        new P("Crabbe"),
+        new P("Goyle"),
       ])
     ])
   ]);
 
-function SearchTree(name, data, width, height) {
-  this.name = name;
-  this.SVG_WIDTH = width;
-  this.SVG_HEIGHT = height;
-  this.CIRCLE_RADIUS = width/60;
-  this.treeData = data;
+class Tree {
+  constructor (name, data, width, height) {
+    this.name = name;
+    this.SVG_WIDTH = width;
+    this.SVG_HEIGHT = height;
+    this.CIRCLE_RADIUS = width/60;
+    this.treeData = data;
+  }
 
-  this.buildTree= function() {
+  buildTree() {
 
     // set the dimensions and margins of the diagram
     const treeMargin = {top: 40, right: 90, bottom: 50, left: 90};
@@ -93,10 +98,10 @@ function SearchTree(name, data, width, height) {
       .text(d => d.data.name);
 
     return g;
-  };
+  }
 
   // Show Text display for search
-  this.createUI = function() {
+  createUI() {
     d3.select('body').append('div')
       .html('Search for: <input type="text" id="search-term"><button type="button" class="start-search-button" value="breadth">Breadth First Search</button><button type="button" class="start-search-button" value="depth">Depth First Search</button><button type="button" id="reset">Reset</button>');
     d3.select('body').append('div')
@@ -114,9 +119,9 @@ function SearchTree(name, data, width, height) {
     d3.select('body')
       .append('div')
       .attr('id', 'current-check');
-  };
+  }
 }
 
-var tree = new SearchTree("Hogwarts", TREE_DATA, 660, 500);
+var tree = new Tree("Hogwarts", TREE_DATA, 660, 500);
 tree.createUI();
 tree.buildTree();
